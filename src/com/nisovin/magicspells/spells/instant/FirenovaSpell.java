@@ -7,6 +7,7 @@ import java.util.Set;
 
 import com.google.common.collect.Sets;
 import com.nisovin.magicspells.Subspell;
+import com.nisovin.magicspells.util.BlockUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -174,16 +175,16 @@ public class FirenovaSpell extends InstantSpell implements TargetedLocationSpell
 					for (int z = bz - this.i; z <= bz + this.i; z++) {
 						if (!(Math.abs(x - bx) == this.i || Math.abs(z - bz) == this.i)) continue;
 						Block b = this.center.getWorld().getBlockAt(x, y, z);
-						if (b.getType() == Material.AIR || (burnTallGrass && b.getType() == Material.LONG_GRASS)) {
+						if (b.getType() == Material.AIR || (burnTallGrass && BlockUtils.isPlant(b.getType()))) {
 							Block under = b.getRelative(BlockFace.DOWN);
-							if (under.getType() == Material.AIR || (burnTallGrass && under.getType() == Material.LONG_GRASS)) {
+							if (under.getType() == Material.AIR || (burnTallGrass && BlockUtils.isPlant(under.getType()))) {
 								b = under;
 							}
 							mat.setBlock(b, false);
 							playSpellEffects(EffectPosition.SPECIAL, b.getLocation());
 							if (subSpell != null) subSpell.castAtLocation(this.player, b.getLocation(), 1);
 							this.fireBlocks.add(b);
-						} else if (b.getRelative(BlockFace.UP).getType() == Material.AIR || (burnTallGrass && b.getRelative(BlockFace.UP).getType() == Material.LONG_GRASS)) {
+						} else if (b.getRelative(BlockFace.UP).getType() == Material.AIR || (burnTallGrass && BlockUtils.isPlant(b.getRelative(BlockFace.UP).getType()))) {
 							b = b.getRelative(BlockFace.UP);
 							mat.setBlock(b, false);
 							playSpellEffects(EffectPosition.SPECIAL, b.getLocation());

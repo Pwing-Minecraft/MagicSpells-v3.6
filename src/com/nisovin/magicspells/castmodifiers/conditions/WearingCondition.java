@@ -1,7 +1,9 @@
 package com.nisovin.magicspells.castmodifiers.conditions;
 
+import com.nisovin.magicspells.materials.SpellMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EntityEquipment;
@@ -15,7 +17,7 @@ import java.util.Objects;
 
 public class WearingCondition extends Condition {
 
-	int[] ids;
+	Material[] mats;
 	short[] datas;
 	boolean[] checkData;
 	String[] names;
@@ -25,7 +27,7 @@ public class WearingCondition extends Condition {
 	public boolean setVar(String var) {
 		try {
 			String[] vardata = var.split(",");
-			ids = new int[vardata.length];
+			mats = new Material[vardata.length];
 			datas = new short[vardata.length];
 			checkData = new boolean[vardata.length];
 			names = new String[vardata.length];
@@ -43,7 +45,7 @@ public class WearingCondition extends Condition {
 				}
 				if (vardata[i].contains(":")) {
 					String[] subvardata = vardata[i].split(":");
-					ids[i] = Integer.parseInt(subvardata[0]);
+					mats[i] = SpellMaterial.fromString(vardata[i]).parseItem().getType();
 					if (subvardata[1].equals("*")) {
 						datas[i] = 0;
 						checkData[i] = false;
@@ -52,7 +54,7 @@ public class WearingCondition extends Condition {
 						checkData[i] = true;
 					}
 				} else {
-					ids[i] = Integer.parseInt(vardata[i]);
+					mats[i] = SpellMaterial.fromString(vardata[i]).parseItem().getType();
 					datas[i] = 0;
 					checkData[i] = false;
 				}
@@ -93,7 +95,7 @@ public class WearingCondition extends Condition {
 	
 	private boolean check(ItemStack item) {
 		if (item == null) return false;
-		int thisid = item.getTypeId();
+		Material thismat = item.getType();
 		short thisdata = item.getDurability();
 		String thisname = null;
 		try {
@@ -103,8 +105,8 @@ public class WearingCondition extends Condition {
 		} catch (Exception e) {
 			DebugHandler.debugGeneral(e);
 		}
-		for (int i = 0; i < ids.length; i++) {
-			if (ids[i] == thisid && (!checkData[i] || datas[i] == thisdata) && (!checkName[i] || Objects.equals(names[i], thisname))) {
+		for (int i = 0; i < mats.length; i++) {
+			if (mats[i] == thismat && (!checkData[i] || datas[i] == thisdata) && (!checkName[i] || Objects.equals(names[i], thisname))) {
 				return true;
 			}
 		}

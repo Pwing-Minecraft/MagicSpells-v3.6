@@ -1,5 +1,7 @@
 package com.nisovin.magicspells.materials;
 
+import org.bukkit.Material;
+
 import java.util.Random;
 
 
@@ -16,7 +18,7 @@ public interface ItemNameResolver {
 	
 	class ItemTypeAndData {
 		
-		public int id = 0;
+		public Material id = Material.AIR;
 		public short data = 0;
 		
 	}

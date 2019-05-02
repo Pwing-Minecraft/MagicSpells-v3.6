@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Objects;
 
+import com.nisovin.magicspells.materials.SpellMaterial;
 import com.nisovin.magicspells.util.Util;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -127,7 +128,7 @@ public class LilywalkSpell extends BuffSpell {
 		public void onBlockBreak(BlockBreakEvent event) {
 			if (lilywalkers.isEmpty()) return;
 			final Block block = event.getBlock();
-			if (block.getType() != Material.WATER_LILY) return;
+			if (block.getType() != SpellMaterial.LILY_PAD.parseMaterial()) return;
 			if (Util.containsValueParallel(lilywalkers, lilies -> lilies.contains(block))) event.setCancelled(true);
 		}
 		
@@ -164,8 +165,8 @@ public class LilywalkSpell extends BuffSpell {
 			if (block.getType() != Material.AIR) return;
 			
 			BlockState state = block.getRelative(BlockFace.DOWN).getState();
-			if ((state.getType() == Material.WATER || state.getType() == Material.STATIONARY_WATER) && BlockUtils.getWaterLevel(state) == 0) {
-				block.setType(Material.WATER_LILY);
+			if ((state.getType() == Material.WATER || state.getType() == SpellMaterial.WATER.parseMaterial()) && BlockUtils.getWaterLevel(state) == 0) {
+				block.setType(SpellMaterial.LILY_PAD.parseMaterial());
 				this.blocks.add(block);
 			}
 		}

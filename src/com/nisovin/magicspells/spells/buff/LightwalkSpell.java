@@ -3,6 +3,7 @@ package com.nisovin.magicspells.spells.buff;
 import java.util.HashMap;
 import java.util.Objects;
 
+import com.nisovin.magicspells.materials.SpellMaterial;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -58,22 +59,51 @@ public class LightwalkSpell extends BuffSpell {
 	}
 	
 	private boolean allowedType(Material mat) {
-		return mat == Material.DIRT || 
-			mat == Material.GRASS ||
-			mat == Material.GRAVEL ||
-			mat == Material.STONE ||
-			mat == Material.COBBLESTONE ||
-			mat == Material.WOOD || 
-			mat == Material.LOG || 
-			mat == Material.NETHERRACK ||
-			mat == Material.SOUL_SAND ||
-			mat == Material.SAND ||
-			mat == Material.SANDSTONE ||
-			mat == Material.GLASS ||
-			mat == Material.WOOL ||
-			mat == Material.DOUBLE_STEP ||
-			mat == Material.BRICK ||
-			mat == Material.OBSIDIAN;
+		SpellMaterial spellMat = SpellMaterial.fromMaterial(mat);
+		switch (spellMat) {
+			case DIRT:
+			case GRASS_BLOCK:
+			case STONE:
+			case COBBLESTONE:
+			case OAK_LOG:
+			case SPRUCE_LOG:
+			case BIRCH_LOG:
+			case JUNGLE_LOG:
+			case ACACIA_LOG:
+			case DARK_OAK_LOG:
+			case OAK_PLANKS:
+			case SPRUCE_PLANKS:
+			case BIRCH_PLANKS:
+			case JUNGLE_PLANKS:
+			case ACACIA_PLANKS:
+			case DARK_OAK_PLANKS:
+			case NETHERRACK:
+			case SOUL_SAND:
+			case SAND:
+			case SANDSTONE:
+			case GLASS:
+			case WHITE_WOOL:
+			case ORANGE_WOOL:
+			case MAGENTA_WOOL:
+			case LIGHT_BLUE_WOOL:
+			case YELLOW_WOOL:
+			case LIME_WOOL:
+			case PINK_WOOL:
+			case GRAY_WOOL:
+			case LIGHT_GRAY_WOOL:
+			case CYAN_WOOL:
+			case BLUE_WOOL:
+			case BROWN_WOOL:
+			case GREEN_WOOL:
+			case RED_WOOL:
+			case BLACK_WOOL:
+			case SMOOTH_STONE:
+			case BRICKS:
+			case OBSIDIAN:
+				return true;
+			default:
+				return false;
+		}
 	}
 	
 	@Override

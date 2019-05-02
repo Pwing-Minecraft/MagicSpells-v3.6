@@ -1,8 +1,12 @@
 package com.nisovin.magicspells;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.nisovin.magicspells.materials.SpellMaterial;
 import com.nisovin.magicspells.util.TimeUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -22,12 +26,20 @@ import com.nisovin.magicspells.util.HandHandler;
 public class CastListener implements Listener {
 
 	MagicSpells plugin;
-	
+
+	private List<SpellMaterial> interactionBlocks = new ArrayList<>();
 	private HashMap<String, Long> noCastUntil = new HashMap<>();
 	//private HashMap<String,Long> lastCast = new HashMap<String, Long>();
 
 	public CastListener(MagicSpells plugin) {
 		this.plugin = plugin;
+
+		interactionBlocks.addAll(Arrays.asList(SpellMaterial.OAK_DOOR, SpellMaterial.SPRUCE_DOOR, SpellMaterial.BIRCH_DOOR, SpellMaterial.JUNGLE_DOOR, SpellMaterial.ACACIA_DOOR, SpellMaterial.DARK_OAK_DOOR,
+				SpellMaterial.OAK_TRAPDOOR, SpellMaterial.SPRUCE_TRAPDOOR, SpellMaterial.BIRCH_TRAPDOOR, SpellMaterial.JUNGLE_TRAPDOOR, SpellMaterial.ACACIA_TRAPDOOR, SpellMaterial.DARK_OAK_TRAPDOOR,
+				SpellMaterial.WHITE_BED, SpellMaterial.ORANGE_BED, SpellMaterial.MAGENTA_BED, SpellMaterial.BLUE_BED, SpellMaterial.YELLOW_BED, SpellMaterial.LIME_BED, SpellMaterial.PINK_BED, SpellMaterial.GRAY_BED,
+				SpellMaterial.LIGHT_GRAY_BED, SpellMaterial.CYAN_BED, SpellMaterial.PURPLE_BED, SpellMaterial.BLUE_BED, SpellMaterial.BROWN_BED, SpellMaterial.GREEN_BED, SpellMaterial.RED_BED, SpellMaterial.BLACK_BED,
+				SpellMaterial.CRAFTING_TABLE, SpellMaterial.CHEST, SpellMaterial.TRAPPED_CHEST, SpellMaterial.ENDER_CHEST, SpellMaterial.FURNACE, SpellMaterial.HOPPER, SpellMaterial.LEVER, SpellMaterial.STONE_BUTTON,
+				SpellMaterial.OAK_BUTTON, SpellMaterial.SPRUCE_BUTTON, SpellMaterial.BIRCH_BUTTON, SpellMaterial.JUNGLE_BUTTON, SpellMaterial.ACACIA_BUTTON, SpellMaterial.DARK_OAK_BUTTON, SpellMaterial.ENCHANTING_TABLE));
 	}
 	
 	@EventHandler(priority=EventPriority.MONITOR)
@@ -38,24 +50,12 @@ public class CastListener implements Listener {
 		boolean noInteract = false;
 		if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			Material m = event.getClickedBlock().getType();
-			if (m == Material.WOODEN_DOOR || 
-					m == Material.TRAP_DOOR ||
-					m == Material.BED || 
-					m == Material.WORKBENCH ||
-					m == Material.CHEST || 
-					m == Material.TRAPPED_CHEST ||
-					m == Material.ENDER_CHEST ||
-					m == Material.FURNACE || 
-					m == Material.HOPPER ||
-					m == Material.LEVER ||
-					m == Material.STONE_BUTTON ||
-					m == Material.WOOD_BUTTON ||
-					m == Material.ENCHANTMENT_TABLE) {
+			if (interactionBlocks.contains(SpellMaterial.fromMaterial(m))) {
 				noInteract = true;
 			} else if (event.hasItem() && event.getItem().getType().isBlock()) {
 				noInteract = true;
 			}
-			if (m == Material.ENCHANTMENT_TABLE) {
+			if (m == SpellMaterial.ENCHANTING_TABLE.parseMaterial()) {
 				// Force exp bar back to show exp when trying to enchant
 				MagicSpells.getExpBarManager().update(player, player.getLevel(), player.getExp());
 			}

@@ -3,6 +3,7 @@ package com.nisovin.magicspells.volatilecode;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.nisovin.magicspells.MagicSpells;
+import com.nisovin.magicspells.materials.SpellMaterial;
 import com.nisovin.magicspells.util.BoundingBox;
 import com.nisovin.magicspells.util.IDisguiseManager;
 import com.nisovin.magicspells.util.LocationUtil;
@@ -10,53 +11,53 @@ import com.nisovin.magicspells.util.MagicConfig;
 import com.nisovin.magicspells.util.SafetyCheckUtils;
 import com.nisovin.magicspells.util.compat.CompatBasics;
 import com.nisovin.magicspells.util.compat.EventUtil;
-import net.minecraft.server.v1_12_R1.ChatComponentText;
-import net.minecraft.server.v1_12_R1.ChatMessageType;
-import net.minecraft.server.v1_12_R1.EntityEnderDragon;
-import net.minecraft.server.v1_12_R1.EntityFallingBlock;
-import net.minecraft.server.v1_12_R1.EntityFireworks;
-import net.minecraft.server.v1_12_R1.EntityHuman;
-import net.minecraft.server.v1_12_R1.EntityInsentient;
-import net.minecraft.server.v1_12_R1.EntityLiving;
-import net.minecraft.server.v1_12_R1.EntitySmallFireball;
-import net.minecraft.server.v1_12_R1.EntityTNTPrimed;
-import net.minecraft.server.v1_12_R1.EnumParticle;
-import net.minecraft.server.v1_12_R1.Item;
-import net.minecraft.server.v1_12_R1.NBTTagCompound;
-import net.minecraft.server.v1_12_R1.NBTTagList;
-import net.minecraft.server.v1_12_R1.PacketPlayOutChat;
-import net.minecraft.server.v1_12_R1.PacketPlayOutEntityDestroy;
-import net.minecraft.server.v1_12_R1.PacketPlayOutEntityStatus;
-import net.minecraft.server.v1_12_R1.PacketPlayOutEntityVelocity;
-import net.minecraft.server.v1_12_R1.PacketPlayOutExperience;
-import net.minecraft.server.v1_12_R1.PacketPlayOutExplosion;
-import net.minecraft.server.v1_12_R1.PacketPlayOutPlayerListHeaderFooter;
-import net.minecraft.server.v1_12_R1.PacketPlayOutSetCooldown;
-import net.minecraft.server.v1_12_R1.PacketPlayOutSetSlot;
-import net.minecraft.server.v1_12_R1.PacketPlayOutSpawnEntityLiving;
-import net.minecraft.server.v1_12_R1.PacketPlayOutTitle;
-import net.minecraft.server.v1_12_R1.PacketPlayOutTitle.EnumTitleAction;
-import net.minecraft.server.v1_12_R1.PacketPlayOutWorldParticles;
-import net.minecraft.server.v1_12_R1.PathfinderGoalFloat;
-import net.minecraft.server.v1_12_R1.PathfinderGoalLookAtPlayer;
-import net.minecraft.server.v1_12_R1.PathfinderGoalSelector;
-import net.minecraft.server.v1_12_R1.PlayerConnection;
-import net.minecraft.server.v1_12_R1.EntityCreature;
-import net.minecraft.server.v1_12_R1.PathEntity;
+import net.minecraft.server.v1_13_R2.ChatComponentText;
+import net.minecraft.server.v1_13_R2.ChatMessageType;
+import net.minecraft.server.v1_13_R2.EntityCreature;
+import net.minecraft.server.v1_13_R2.EntityEnderDragon;
+import net.minecraft.server.v1_13_R2.EntityFallingBlock;
+import net.minecraft.server.v1_13_R2.EntityFireworks;
+import net.minecraft.server.v1_13_R2.EntityHuman;
+import net.minecraft.server.v1_13_R2.EntityInsentient;
+import net.minecraft.server.v1_13_R2.EntityLiving;
+import net.minecraft.server.v1_13_R2.EntitySmallFireball;
+import net.minecraft.server.v1_13_R2.EntityTNTPrimed;
+import net.minecraft.server.v1_13_R2.Item;
+import net.minecraft.server.v1_13_R2.NBTTagCompound;
+import net.minecraft.server.v1_13_R2.NBTTagList;
+import net.minecraft.server.v1_13_R2.PacketPlayOutChat;
+import net.minecraft.server.v1_13_R2.PacketPlayOutEntityDestroy;
+import net.minecraft.server.v1_13_R2.PacketPlayOutEntityStatus;
+import net.minecraft.server.v1_13_R2.PacketPlayOutEntityVelocity;
+import net.minecraft.server.v1_13_R2.PacketPlayOutExperience;
+import net.minecraft.server.v1_13_R2.PacketPlayOutExplosion;
+import net.minecraft.server.v1_13_R2.PacketPlayOutPlayerListHeaderFooter;
+import net.minecraft.server.v1_13_R2.PacketPlayOutSetCooldown;
+import net.minecraft.server.v1_13_R2.PacketPlayOutSetSlot;
+import net.minecraft.server.v1_13_R2.PacketPlayOutSpawnEntityLiving;
+import net.minecraft.server.v1_13_R2.PacketPlayOutTitle;
+import net.minecraft.server.v1_13_R2.PacketPlayOutTitle.EnumTitleAction;
+import net.minecraft.server.v1_13_R2.PathEntity;
+import net.minecraft.server.v1_13_R2.PathfinderGoalFloat;
+import net.minecraft.server.v1_13_R2.PathfinderGoalLookAtPlayer;
+import net.minecraft.server.v1_13_R2.PathfinderGoalSelector;
+import net.minecraft.server.v1_13_R2.PlayerConnection;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.attribute.AttributeModifier.Operation;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
-import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftCreature;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftFallingBlock;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftLivingEntity;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftTNTPrimed;
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
+import org.bukkit.block.data.Powerable;
+import org.bukkit.craftbukkit.v1_13_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftCreature;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftFallingBlock;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftTNTPrimed;
+import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -74,18 +75,15 @@ import org.bukkit.util.Vector;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-public class VolatileCodeEnabled_1_12_R1 implements VolatileCodeHandle {
+public class VolatileCodeEnabled_1_13_R2 implements VolatileCodeHandle {
 
 	VolatileCodeDisabled fallback = new VolatileCodeDisabled();
 
@@ -96,21 +94,8 @@ public class VolatileCodeEnabled_1_12_R1 implements VolatileCodeHandle {
 	private Class<?> craftMetaSkullClass = null;
 	private Field craftMetaSkullProfileField = null;
 
-	public VolatileCodeEnabled_1_12_R1(MagicConfig config) {
+	public VolatileCodeEnabled_1_13_R2(MagicConfig config) {
 		try {
-			this.packet63Fields[0] = PacketPlayOutWorldParticles.class.getDeclaredField("a");
-			this.packet63Fields[1] = PacketPlayOutWorldParticles.class.getDeclaredField("b");
-			this.packet63Fields[2] = PacketPlayOutWorldParticles.class.getDeclaredField("c");
-			this.packet63Fields[3] = PacketPlayOutWorldParticles.class.getDeclaredField("d");
-			this.packet63Fields[4] = PacketPlayOutWorldParticles.class.getDeclaredField("e");
-			this.packet63Fields[5] = PacketPlayOutWorldParticles.class.getDeclaredField("f");
-			this.packet63Fields[6] = PacketPlayOutWorldParticles.class.getDeclaredField("g");
-			this.packet63Fields[7] = PacketPlayOutWorldParticles.class.getDeclaredField("h");
-			this.packet63Fields[8] = PacketPlayOutWorldParticles.class.getDeclaredField("i");
-			this.packet63Fields[9] = PacketPlayOutWorldParticles.class.getDeclaredField("j");
-			this.packet63Fields[10] = PacketPlayOutWorldParticles.class.getDeclaredField("k");
-			AccessibleObject.setAccessible(this.packet63Fields, true);
-
 			this.craftItemStackHandleField = CraftItemStack.class.getDeclaredField("handle");
 			this.craftItemStackHandleField.setAccessible(true);
 
@@ -123,18 +108,12 @@ public class VolatileCodeEnabled_1_12_R1 implements VolatileCodeHandle {
 			this.entityFallingBlockFallHurtMaxField = EntityFallingBlock.class.getDeclaredField("fallHurtMax");
 			this.entityFallingBlockFallHurtMaxField.setAccessible(true);
 
-			this.craftMetaSkullClass = Class.forName("org.bukkit.craftbukkit.v1_12_R1.inventory.CraftMetaSkull");
+			this.craftMetaSkullClass = Class.forName("org.bukkit.craftbukkit.v1_13_R2.inventory.CraftMetaSkull");
 			this.craftMetaSkullProfileField = this.craftMetaSkullClass.getDeclaredField("profile");
 			this.craftMetaSkullProfileField.setAccessible(true);
 		} catch (Exception e) {
-			MagicSpells.error("THIS OCCURRED WHEN CREATING THE VOLATILE CODE HANDLE FOR 1.12, THE FOLLOWING ERROR IS MOST LIKELY USEFUL IF YOU'RE RUNNING THE LATEST VERSION OF MAGICSPELLS.");
+			MagicSpells.error("THIS OCCURRED WHEN CREATING THE VOLATILE CODE HANDLE FOR 1.13.2, THE FOLLOWING ERROR IS MOST LIKELY USEFUL IF YOU'RE RUNNING THE LATEST VERSION OF MAGICSPELLS.");
 			e.printStackTrace();
-		}
-
-		for (EnumParticle particle : EnumParticle.values()) {
-			if (particle != null) {
-				this.particleMap.put(particle.b(), particle);
-			}
 		}
 	}
 
@@ -144,7 +123,7 @@ public class VolatileCodeEnabled_1_12_R1 implements VolatileCodeHandle {
 
 		if (item instanceof CraftItemStack) {
 			try {
-				return ((net.minecraft.server.v1_12_R1.ItemStack)this.craftItemStackHandleField.get(item)).getTag();
+				return ((net.minecraft.server.v1_13_R2.ItemStack)this.craftItemStackHandleField.get(item)).getTag();
 			} catch (Exception e) {
 				// No op currently
 			}
@@ -160,9 +139,9 @@ public class VolatileCodeEnabled_1_12_R1 implements VolatileCodeHandle {
 			craftItem = CraftItemStack.asCraftCopy(item);
 		}
 
-		net.minecraft.server.v1_12_R1.ItemStack nmsItem = null;
+		net.minecraft.server.v1_13_R2.ItemStack nmsItem = null;
 		try {
-			nmsItem = (net.minecraft.server.v1_12_R1.ItemStack)this.craftItemStackHandleField.get(item);
+			nmsItem = (net.minecraft.server.v1_13_R2.ItemStack)this.craftItemStackHandleField.get(item);
 		} catch (Exception e) {
 			// No op currently
 		}
@@ -214,7 +193,7 @@ public class VolatileCodeEnabled_1_12_R1 implements VolatileCodeHandle {
 
 	@Override
 	public void sendFakeSlotUpdate(Player player, int slot, ItemStack item) {
-		net.minecraft.server.v1_12_R1.ItemStack nmsItem;
+		net.minecraft.server.v1_13_R2.ItemStack nmsItem;
 		if (item != null) {
 			nmsItem = CraftItemStack.asNMSCopy(item);
 		} else {
@@ -232,7 +211,14 @@ public class VolatileCodeEnabled_1_12_R1 implements VolatileCodeHandle {
 
 	@Override
 	public void pressPressurePlate(Block block) {
-		block.setData((byte) (block.getData() ^ 0x1));
+		if (!(block.getBlockData() instanceof Powerable)) {
+			return;
+		}
+
+		Powerable powerable = (Powerable) block.getBlockData();
+		powerable.setPowered(true);
+		block.setBlockData(powerable);
+		// block.setData((byte) (block.getData() ^ 0x1));
 	}
 
 	@Override
@@ -267,7 +253,7 @@ public class VolatileCodeEnabled_1_12_R1 implements VolatileCodeHandle {
 
 	@Override
 	public Fireball shootSmallFireball(Player player) {
-		net.minecraft.server.v1_12_R1.World w = ((CraftWorld)player.getWorld()).getHandle();
+		net.minecraft.server.v1_13_R2.World w = ((CraftWorld)player.getWorld()).getHandle();
 		Location playerLoc = player.getLocation();
 		Vector loc = player.getEyeLocation().toVector().add(player.getLocation().getDirection().multiply(10));
 
@@ -364,7 +350,7 @@ public class VolatileCodeEnabled_1_12_R1 implements VolatileCodeHandle {
 	@Override
 	public void createFireworksExplosion(Location location, boolean flicker, boolean trail, int type, int[] colors, int[] fadeColors, int flightDuration) {
 		// Create item
-		net.minecraft.server.v1_12_R1.ItemStack item = new net.minecraft.server.v1_12_R1.ItemStack(Item.getById(401), 1, 0);
+		net.minecraft.server.v1_13_R2.ItemStack item = CraftItemStack.asNMSCopy(new ItemStack(SpellMaterial.FIREWORK_ROCKET.parseMaterial()));
 
 		// Get tag
 		NBTTagCompound tag = item.getTag();
@@ -400,8 +386,6 @@ public class VolatileCodeEnabled_1_12_R1 implements VolatileCodeHandle {
 		}
 	}
 
-	Field[] packet63Fields = new Field[11];
-	Map<String, EnumParticle> particleMap = new HashMap<>();
 
 	@Override
 	public void playParticleEffect(Location location, String name, float spreadHoriz, float spreadVert, float speed, int count, int radius, float yOffset) {
@@ -411,6 +395,8 @@ public class VolatileCodeEnabled_1_12_R1 implements VolatileCodeHandle {
 	@Override
 	public void playParticleEffect(Location location, String name, float spreadX, float spreadY, float spreadZ, float speed, int count, int radius, float yOffset) {
 		//location.getWorld().spawnParticle(null, location.getX(), location.getY() + yOffset, location.getZ(), count, spreadX, spreadY, spreadZ, speed);
+
+		/*
 		PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles();
 		EnumParticle particle = this.particleMap.get(name);
 		int[] data = null;
@@ -455,6 +441,17 @@ public class VolatileCodeEnabled_1_12_R1 implements VolatileCodeHandle {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+		*/
+
+		int rSq = radius * radius;
+
+		for (Player player : location.getWorld().getPlayers()) {
+			if (player.getLocation().distanceSquared(location) <= rSq) {
+				player.spawnParticle(Particle.valueOf(name), location.clone().add(0D, yOffset, 0D), count, spreadX, spreadY, spreadZ, speed);
+			} else {
+				// No op yet
+			}
 		}
 	}
 
@@ -821,7 +818,7 @@ public class VolatileCodeEnabled_1_12_R1 implements VolatileCodeHandle {
 
 	@Override
 	public void showItemCooldown(Player player, ItemStack item, int duration) {
-		PacketPlayOutSetCooldown packet = new PacketPlayOutSetCooldown(Item.getById(item.getTypeId()), duration);
+		PacketPlayOutSetCooldown packet = new PacketPlayOutSetCooldown(CraftItemStack.asNMSCopy(item).getItem(), duration);
 		((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
 	}
 
@@ -880,6 +877,6 @@ public class VolatileCodeEnabled_1_12_R1 implements VolatileCodeHandle {
 
 	@Override
 	public void setBlockFromFallingBlock(Block block, FallingBlock fallingBlock, boolean physics) {
-		block.setTypeIdAndData(fallingBlock.getBlockId(), fallingBlock.getBlockData(), physics);
+		block.setBlockData(fallingBlock.getBlockData(), physics);
 	}
 }

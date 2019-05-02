@@ -3,6 +3,7 @@ package com.nisovin.magicspells.spells.instant;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import com.nisovin.magicspells.materials.SpellMaterial;
 import com.nisovin.magicspells.util.RegexUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -39,7 +40,7 @@ public class ConjureFireworkSpell extends InstantSpell implements TargetedLocati
 		pickupDelay = getConfigInt("pickup-delay", 0);
 		pickupDelay = Math.max(pickupDelay, 0);
 		itemHasGravity = getConfigBoolean("gravity", true);
-		firework = new ItemStack(Material.FIREWORK, getConfigInt("count", 1));
+		firework = new ItemStack(SpellMaterial.FIREWORK_ROCKET.parseMaterial(), getConfigInt("count", 1));
 		FireworkMeta meta = (FireworkMeta)firework.getItemMeta();
 		
 		meta.setPower(getConfigInt("flight", 2));

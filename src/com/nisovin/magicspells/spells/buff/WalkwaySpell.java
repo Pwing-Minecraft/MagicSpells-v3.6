@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import com.nisovin.magicspells.materials.SpellMaterial;
 import com.nisovin.magicspells.util.Util;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -201,7 +202,13 @@ public class WalkwaySpell extends BuffSpell {
 				if (origin.getType() == Material.AIR) {
 					// Check for weird stair positioning
 					Block up = origin.getRelative(0, 1, 0);
-					if (up != null && ((this.materialPlatform == Material.WOOD && up.getType() == Material.WOOD_STAIRS) || (this.materialPlatform == Material.COBBLESTONE && up.getType() == Material.COBBLESTONE_STAIRS))) {
+
+					// TODO: Clean this up a bit...
+					if (up != null && (((this.materialPlatform == SpellMaterial.OAK_PLANKS.parseMaterial() || this.materialPlatform == SpellMaterial.SPRUCE_PLANKS.parseMaterial()
+							|| this.materialPlatform == SpellMaterial.BIRCH_PLANKS.parseMaterial() || this.materialPlatform == SpellMaterial.JUNGLE_PLANKS.parseMaterial()
+							|| this.materialPlatform == SpellMaterial.ACACIA_PLANKS.parseMaterial()|| this.materialPlatform == SpellMaterial.DARK_OAK_PLANKS.parseMaterial()) && (up.getType() == SpellMaterial.OAK_STAIRS.parseMaterial()
+							|| up.getType() == SpellMaterial.SPRUCE_STAIRS.parseMaterial() || up.getType() == SpellMaterial.BIRCH_STAIRS.parseMaterial() || up.getType() == SpellMaterial.JUNGLE_STAIRS.parseMaterial()
+					        || up.getType() == SpellMaterial.ACACIA_STAIRS.parseMaterial() || up.getType() == SpellMaterial.DARK_OAK_STAIRS.parseMaterial())) || (this.materialPlatform == Material.COBBLESTONE && up.getType() == Material.COBBLESTONE_STAIRS))) {
 						origin = up;
 					} else {					
 						// Allow down movement when stepping out over an edge
@@ -237,7 +244,9 @@ public class WalkwaySpell extends BuffSpell {
 			// Determine block type and maybe stair direction
 			Material mat = this.materialPlatform;
 			byte data = 0;
-			if ((this.materialPlatform == Material.WOOD || this.materialPlatform == Material.COBBLESTONE) && dirY != 0) {
+			if (((this.materialPlatform == SpellMaterial.OAK_PLANKS.parseMaterial() || this.materialPlatform == SpellMaterial.SPRUCE_PLANKS.parseMaterial()
+					|| this.materialPlatform == SpellMaterial.BIRCH_PLANKS.parseMaterial() || this.materialPlatform == SpellMaterial.JUNGLE_PLANKS.parseMaterial()
+					|| this.materialPlatform == SpellMaterial.ACACIA_PLANKS.parseMaterial()|| this.materialPlatform == SpellMaterial.DARK_OAK_PLANKS.parseMaterial()) || this.materialPlatform == Material.COBBLESTONE) && dirY != 0) {
 				boolean changed = false;
 				if (dirY == -1) {
 					if (dirX == -1 && dirZ == 0) {
@@ -269,10 +278,29 @@ public class WalkwaySpell extends BuffSpell {
 					}
 				}
 				if (changed) {
-					if (this.materialPlatform == Material.WOOD) {
-						mat = Material.WOOD_STAIRS;
-					} else if (this.materialPlatform == Material.COBBLESTONE) {
-						mat = Material.COBBLESTONE_STAIRS;
+					SpellMaterial spellMat = SpellMaterial.fromMaterial(materialPlatform);
+					switch (spellMat) {
+						case OAK_PLANKS:
+							mat = SpellMaterial.OAK_STAIRS.parseMaterial();
+							break;
+						case SPRUCE_PLANKS:
+							mat = SpellMaterial.SPRUCE_STAIRS.parseMaterial();
+							break;
+						case BIRCH_PLANKS:
+							mat = SpellMaterial.BIRCH_STAIRS.parseMaterial();
+							break;
+						case JUNGLE_PLANKS:
+							mat = SpellMaterial.JUNGLE_STAIRS.parseMaterial();
+							break;
+						case ACACIA_PLANKS:
+							mat = SpellMaterial.ACACIA_STAIRS.parseMaterial();
+							break;
+						case DARK_OAK_PLANKS:
+							mat = SpellMaterial.DARK_OAK_STAIRS.parseMaterial();
+							break;
+						case COBBLESTONE:
+							mat = Material.COBBLESTONE;
+							break;
 					}
 				}
 			}

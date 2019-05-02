@@ -68,10 +68,11 @@ public class TreeSpell extends TargetedSpell implements TargetedLocationSpell {
 		if (target.getType() != Material.AIR) return false;
 		
 		// Grow tree
+		// TODO: Reimplment the TreeWatcher in the form of VolatileCode
 		Location loc = target.getLocation();				
 		if (speed > 0) {
 			List<BlockState> blockStates = new ArrayList<>();
-			target.getWorld().generateTree(loc, treeType, new TreeWatch(loc, blockStates));
+			target.getWorld().generateTree(loc, treeType/*, new TreeWatch(loc, blockStates) */);
 			if (!blockStates.isEmpty()) {
 				new GrowAnimation(loc.getBlockX(), loc.getBlockZ(), blockStates, speed);
 				return true;
@@ -131,7 +132,8 @@ public class TreeSpell extends TargetedSpell implements TargetedLocationSpell {
 		}
 		
 	}
-	
+
+	/*
 	private class TreeWatch implements BlockChangeDelegate {
 
 		private Location loc;
@@ -185,5 +187,5 @@ public class TreeSpell extends TargetedSpell implements TargetedLocationSpell {
 		}
 		
 	}
-
+	*/
 }

@@ -2,6 +2,7 @@ package com.nisovin.magicspells.spells.buff;
 
 import java.util.HashMap;
 
+import com.nisovin.magicspells.materials.SpellMaterial;
 import com.nisovin.magicspells.util.Util;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -38,7 +39,7 @@ public class FrostwalkSpell extends BuffSpell {
 
 	@Override
 	public boolean castBuff(Player player, float power, String[] args) {
-		frostwalkers.put(player.getName(), new BlockPlatform(Material.ICE, Material.STATIONARY_WATER, player.getLocation().getBlock().getRelative(0, -1, 0), size, !leaveFrozen, "square"));
+		frostwalkers.put(player.getName(), new BlockPlatform(Material.ICE, SpellMaterial.WATER.parseMaterial(), player.getLocation().getBlock().getRelative(0, -1, 0), size, !leaveFrozen, "square"));
 		return true;
 	}
 
@@ -62,7 +63,7 @@ public class FrostwalkSpell extends BuffSpell {
 		double locationFromY = locationFrom.getY();
 		Block locationToBlock = locationTo.getBlock();
 		
-		if (locationToY > locationFromY && locationToY % 1 > .62 && locationToBlock.getType() == Material.STATIONARY_WATER && locationToBlock.getRelative(0, 1, 0).getType() == Material.AIR) {
+		if (locationToY > locationFromY && locationToY % 1 > .62 && locationToBlock.getType() == SpellMaterial.WATER.parseMaterial() && locationToBlock.getRelative(0, 1, 0).getType() == Material.AIR) {
 			block = locationToBlock;
 			teleportUp = true;
 		} else {

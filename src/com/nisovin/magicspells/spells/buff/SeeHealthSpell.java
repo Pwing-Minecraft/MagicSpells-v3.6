@@ -3,6 +3,7 @@ package com.nisovin.magicspells.spells.buff;
 import java.util.HashMap;
 import java.util.Random;
 
+import com.nisovin.magicspells.materials.SpellMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -74,7 +75,7 @@ public class SeeHealthSpell extends BuffSpell {
 		// Get item
 		ItemStack item = HandHandler.getItemInMainHand(player);
 		if (item == null || item.getType() == Material.AIR) {
-			item = new ItemStack(Material.PISTON_MOVING_PIECE, 0);
+			item = new ItemStack(SpellMaterial.MOVING_PISTON.parseMaterial(), 0);
 		} else {
 			item = item.clone();
 		}

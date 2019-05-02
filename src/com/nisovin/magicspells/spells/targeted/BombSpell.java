@@ -2,6 +2,7 @@ package com.nisovin.magicspells.spells.targeted;
 
 import java.util.List;
 
+import com.nisovin.magicspells.util.BlockUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -56,7 +57,7 @@ public class BombSpell extends TargetedSpell implements TargetedLocationSpell {
 	
 	private boolean bomb(final Player player, final Location loc, final float power) {
 		final Block block = loc.getBlock();
-		if (block.getType() == Material.AIR || block.getType() == Material.LONG_GRASS || block.getType() == Material.SNOW) {
+		if (block.getType() == Material.AIR || BlockUtils.isPlant(block.getType()) || block.getType() == Material.SNOW) {
 			bomb.setBlock(block);
 			if (player != null) {
 				playSpellEffects(player, loc);

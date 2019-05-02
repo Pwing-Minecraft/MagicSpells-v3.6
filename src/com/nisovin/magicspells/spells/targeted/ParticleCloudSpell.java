@@ -77,7 +77,8 @@ public class ParticleCloudSpell extends TargetedSpell implements TargetedLocatio
 		boolean ambient = Boolean.parseBoolean(splits[3]);
 		boolean particles = Boolean.parseBoolean(splits[4]);
 		int color = Integer.parseInt(splits[5], 16);
-		return new PotionEffect(type, durationTicks, amplifier, ambient, particles, Color.fromRGB(color));
+
+		return new PotionEffect(type, durationTicks, amplifier, ambient, particles);
 	}
 
 	@Override

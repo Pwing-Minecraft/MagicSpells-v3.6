@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.nisovin.magicspells.materials.SpellMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -245,7 +246,7 @@ public class SpawnMonsterSpell extends TargetedSpell implements TargetedLocation
 			z = location.getBlockZ() + random.nextInt(range << 1) - range;
 			
 			block = world.getBlockAt(x, y, z);
-			if (block.getType() == Material.STATIONARY_WATER || block.getType() == Material.WATER) return block.getLocation();
+			if (block.getType() == SpellMaterial.WATER.parseMaterial() || block.getType() == Material.WATER) return block.getLocation();
 			if (BlockUtils.isPathable(block)) {
 				if (allowSpawnInMidair) return block.getLocation();
 				int c = 0;

@@ -18,6 +18,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import com.nisovin.magicspells.materials.SpellMaterial;
 import com.nisovin.magicspells.util.itemreader.alternative.AlternativeReaderManager;
 import org.apache.commons.math3.util.FastMath;
 import org.bukkit.Bukkit;
@@ -744,11 +745,14 @@ public class Util {
 	}
 	
 	public static void createFire(Block block, byte d) {
-		block.setTypeIdAndData(Material.FIRE.getId(), d, false);
+		block.setType(Material.FIRE, false);
+		block.getState().setRawData(d);
+		// block.setTypeIdAndData(Material.FIRE.getId(), d, false);
 	}
 	
 	public static ItemStack getEggItemForEntityType(EntityType type) {
-		ItemStack ret = new ItemStack(Material.MONSTER_EGG, 1);
+		// Use legacy material name for the time being
+		ItemStack ret = SpellMaterial.fromString("MONSTER_EGG").parseItem();
 		ItemMeta meta = ret.getItemMeta();
 		if (meta instanceof SpawnEggMeta) {
 			((SpawnEggMeta) meta).setSpawnedType(type);
@@ -805,7 +809,7 @@ public class Util {
 	public static <C extends Collection<Material>> C getMaterialList(List<String> strings, Supplier<C> supplier) {
 		C ret = supplier.get();
 		strings.forEach(string -> {
-			ret.add(Material.matchMaterial(string));
+			ret.add(SpellMaterial.fromString(string).parseMaterial());
 		});
 		return ret;
 	}
@@ -817,5 +821,8 @@ public class Util {
 			return null;
 		}
 	}
-	
+
+	public static String getNMSPackage() {
+		return Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+	}
 }

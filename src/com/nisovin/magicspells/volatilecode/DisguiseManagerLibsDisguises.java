@@ -7,6 +7,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.nisovin.magicspells.materials.SpellMaterial;
 import com.nisovin.magicspells.util.compat.EventUtil;
 import me.libraryaddict.disguise.disguisetypes.AnimalColor;
 import me.libraryaddict.disguise.disguisetypes.DisguiseType;
@@ -279,13 +280,13 @@ public class DisguiseManagerLibsDisguises implements Listener, IDisguiseManager 
 				case 0: // No armor, already null
 					break;
 				case 1: // Iron armor
-					horseArmor = new ItemStack(Material.IRON_BARDING, 1);
+					horseArmor = SpellMaterial.IRON_HORSE_ARMOR.parseItem();
 					break;
 				case 2:
-					horseArmor = new ItemStack(Material.GOLD_BARDING, 1);
+					horseArmor = SpellMaterial.GOLDEN_HORSE_ARMOR.parseItem();
 					break;
 				case 3:
-					horseArmor = new ItemStack(Material.DIAMOND_BARDING, 1);
+					horseArmor = SpellMaterial.DIAMOND_HORSE_ARMOR.parseItem();
 					break;
 				}
 				

@@ -116,5 +116,6 @@ public interface VolatileCodeHandle {
 	void setTexture(SkullMeta meta, String texture, String signature, String uuid, String name);
 	
 	void setSkin(Player player, String skin, String signature);
-		
+
+	void setBlockFromFallingBlock(Block block, FallingBlock fallingBlock, boolean physics);
 }

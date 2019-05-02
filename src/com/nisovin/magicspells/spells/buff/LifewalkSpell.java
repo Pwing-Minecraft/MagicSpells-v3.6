@@ -3,6 +3,7 @@ package com.nisovin.magicspells.spells.buff;
 import java.util.HashSet;
 import java.util.Random;
 
+import com.nisovin.magicspells.materials.SpellMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.GrassSpecies;
 import org.bukkit.Material;
@@ -104,6 +105,8 @@ public class LifewalkSpell extends BuffSpell {
 						turnOff(player);
 						continue;
 					}
+
+					// TODO: Make this spell give more than roses and dandelions, as well as fully update to 1.13
 					Block feet = player.getLocation().getBlock();
 					Block ground = feet.getRelative(BlockFace.DOWN);
 					if (feet.getType() == Material.AIR && (ground.getType() == Material.DIRT || ground.getType() == Material.GRASS)) {
@@ -112,26 +115,26 @@ public class LifewalkSpell extends BuffSpell {
 						}
 						int rand = random.nextInt(100);
 						if (rand < redFlowerChance) {
-							feet.setType(Material.RED_ROSE);
+							feet.setType(SpellMaterial.POPPY.parseMaterial());
 							addUse(player);
 							chargeUseCost(player);
 						} else {
 							rand -= redFlowerChance;
 							if (rand < yellowFlowerChance) {
-								feet.setType(Material.YELLOW_FLOWER);
+								feet.setType(SpellMaterial.DANDELION.parseMaterial());
 								addUse(player);
 								chargeUseCost(player);
 							} else {
 								rand -= yellowFlowerChance;
 								if (rand < saplingChance) {
-									feet.setType(Material.SAPLING);
+									feet.setType(SpellMaterial.OAK_SAPLING.parseMaterial());
 									addUse(player);
 									chargeUseCost(player);
 								} else {
 									rand -= saplingChance;
 									if (rand < tallgrassChance) {
 										BlockState state = feet.getState();
-										state.setType(Material.LONG_GRASS);
+										state.setType(SpellMaterial.FERN.parseMaterial());
 										state.setData(new LongGrass(GrassSpecies.NORMAL));
 										state.update(true);
 										addUse(player);
@@ -140,7 +143,7 @@ public class LifewalkSpell extends BuffSpell {
 										rand -= tallgrassChance;
 										if (rand < fernChance) {
 											BlockState state = feet.getState();
-											state.setType(Material.LONG_GRASS);
+											state.setType(SpellMaterial.FERN.parseMaterial());
 											state.setData(new LongGrass(GrassSpecies.FERN_LIKE));
 											state.update(true);
 											addUse(player);

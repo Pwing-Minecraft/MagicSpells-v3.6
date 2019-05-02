@@ -1,5 +1,6 @@
 package com.nisovin.magicspells.util;
 
+import com.nisovin.magicspells.materials.SpellMaterial;
 import org.bukkit.Material;
 
 import com.nisovin.magicspells.MagicSpells;
@@ -28,7 +29,7 @@ public class ParticleNameUtil {
 		if (splits.length > 1) {
 			Material mat = null;
 			try {
-				mat = Material.getMaterial(Integer.parseInt(splits[1]));
+				mat = SpellMaterial.fromString(splits[1]).parseItem().getType();
 			} catch (Exception e) {
 				//no op
 			}

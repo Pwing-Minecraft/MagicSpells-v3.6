@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.nisovin.magicspells.materials.SpellMaterial;
+import com.nisovin.magicspells.util.BlockUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.util.Vector;
@@ -40,14 +42,14 @@ public class NovaEffect extends SpellEffect {
 	@Override
 	public void loadFromString(String string) {
 		if (string != null && !string.isEmpty()) {
-			
+
 			String[] params = string.split(" ");
-			int type = 51;
+			Material type = Material.FIRE;
 			byte data = 0;
 			
 			if (params.length >= 1) {
 				try {
-					type = Integer.parseInt(params[0]);
+					type = SpellMaterial.fromString(string).parseItem().getType();
 				} catch (NumberFormatException e) {
 					DebugHandler.debugNumberFormat(e);
 				}
@@ -164,14 +166,14 @@ public class NovaEffect extends SpellEffect {
 					if (Math.abs(x - bx) != tick && Math.abs(z - bz) != tick) continue;
 					
 					Block b = center.getWorld().getBlockAt(x, y, z);
-					if (b.getType() == Material.AIR || b.getType() == Material.LONG_GRASS) {
+					if (b.getType() == Material.AIR || BlockUtils.isPlant(b.getType())) {
 						Block under = b.getRelative(BlockFace.DOWN);
-						if (under.getType() == Material.AIR || under.getType() == Material.LONG_GRASS) b = under;
-					} else if (b.getRelative(BlockFace.UP).getType() == Material.AIR || b.getRelative(BlockFace.UP).getType() == Material.LONG_GRASS) {
+						if (under.getType() == Material.AIR || BlockUtils.isPlant(under.getType())) b = under;
+					} else if (b.getRelative(BlockFace.UP).getType() == Material.AIR || BlockUtils.isPlant(b.getRelative(BlockFace.UP).getType())) {
 						b = b.getRelative(BlockFace.UP);
 					}
 					
-					if (b.getType() != Material.AIR && b.getType() != Material.LONG_GRASS) continue;
+					if (b.getType() != Material.AIR && !BlockUtils.isPlant(b.getType())) continue;
 					
 					if (blocks.contains(b)) continue;
 					for (Player p : nearby) Util.sendFakeBlockChange(p, b, matNova);
@@ -240,14 +242,14 @@ public class NovaEffect extends SpellEffect {
 			if (startRadius == 0 && tick == 0) {
 				b = centerLocation.getWorld().getBlockAt(centerLocation);
 				
-				if (b.getType() == Material.AIR || b.getType() == Material.LONG_GRASS) {
+				if (b.getType() == Material.AIR || BlockUtils.isPlant(b.getType())) {
 					Block under = b.getRelative(BlockFace.DOWN);
-					if (under.getType() == Material.AIR || under.getType() == Material.LONG_GRASS) b = under;
-				} else if (b.getRelative(BlockFace.UP).getType() == Material.AIR || b.getRelative(BlockFace.UP).getType() == Material.LONG_GRASS) {
+					if (under.getType() == Material.AIR || BlockUtils.isPlant(under.getType())) b = under;
+				} else if (b.getRelative(BlockFace.UP).getType() == Material.AIR || BlockUtils.isPlant(b.getRelative(BlockFace.UP).getType())) {
 					b = b.getRelative(BlockFace.UP);
 				}
 				
-				if (b.getType() != Material.AIR && b.getType() != Material.LONG_GRASS) return;
+				if (b.getType() != Material.AIR && !BlockUtils.isPlant(b.getType())) return;
 				
 				if (blocks.contains(b)) return;
 				for (Player p : nearby) Util.sendFakeBlockChange(p, b, matNova);
@@ -267,14 +269,14 @@ public class NovaEffect extends SpellEffect {
 				b = center.getWorld().getBlockAt(centerLocation.add(v));
 				centerLocation.subtract(v);
 				
-				if (b.getType() == Material.AIR || b.getType() == Material.LONG_GRASS) {
+				if (b.getType() == Material.AIR || BlockUtils.isPlant(b.getType())) {
 					Block under = b.getRelative(BlockFace.DOWN);
-					if (under.getType() == Material.AIR || under.getType() == Material.LONG_GRASS) b = under;
-				} else if (b.getRelative(BlockFace.UP).getType() == Material.AIR || b.getRelative(BlockFace.UP).getType() == Material.LONG_GRASS) {
+					if (under.getType() == Material.AIR || BlockUtils.isPlant(under.getType())) b = under;
+				} else if (b.getRelative(BlockFace.UP).getType() == Material.AIR || BlockUtils.isPlant(b.getRelative(BlockFace.UP).getType())) {
 					b = b.getRelative(BlockFace.UP);
 				}
 				
-				if (b.getType() != Material.AIR && b.getType() != Material.LONG_GRASS) continue;
+				if (b.getType() != Material.AIR && !BlockUtils.isPlant(b.getType())) continue;
 				
 				if (blocks.contains(b)) continue;
 				for (Player p : nearby) Util.sendFakeBlockChange(p, b, matNova);

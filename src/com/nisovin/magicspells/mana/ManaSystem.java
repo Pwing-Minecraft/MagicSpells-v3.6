@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import com.nisovin.magicspells.materials.SpellMaterial;
 import com.nisovin.magicspells.util.TimeUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -265,7 +266,7 @@ public class ManaSystem extends ManaHandler {
 		if (item == null) return;
 		
 		Material type = item.getType();
-		if (type == Material.WOOD_AXE || type == Material.WOOD_HOE || type == Material.WOOD_PICKAXE || type == Material.WOOD_SPADE || type == Material.WOOD_SWORD) {
+		if (type == SpellMaterial.WOODEN_AXE.parseMaterial() || type == SpellMaterial.WOODEN_HOE.parseMaterial() || type == SpellMaterial.WOODEN_PICKAXE.parseMaterial() || type == SpellMaterial.WOODEN_SHOVEL.parseMaterial() || type == SpellMaterial.WOODEN_SWORD.parseMaterial()) {
 			int dur = 60 - (int)(((double)bar.getMana()/(double)bar.getMaxMana()) * 60);
 			if (dur == 60) {
 				dur = 59;

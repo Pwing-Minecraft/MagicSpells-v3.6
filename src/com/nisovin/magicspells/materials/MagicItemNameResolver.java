@@ -69,11 +69,11 @@ public class MagicItemNameResolver implements ItemNameResolver {
 		if (string.contains(":")) {
 			String[] split = string.split(":");
 			if (RegexUtil.matches(DIGITS, split[0])) {
-				item.id = Integer.parseInt(split[0]);
+				item.id = SpellMaterial.fromString(string).parseItem().getType();
 			} else {
 				Material mat = Material.getMaterial(split[0].toUpperCase());
 				if (mat == null) return null;
-				item.id = mat.getId();
+				item.id = mat;
 			}
 			if (RegexUtil.matches(DIGITS, split[1])) {
 				item.data = Short.parseShort(split[1]);
@@ -82,11 +82,11 @@ public class MagicItemNameResolver implements ItemNameResolver {
 			}
 		} else {
 			if (RegexUtil.matches(DIGITS, string)) {
-				item.id = Integer.parseInt(string);
+				item.id = SpellMaterial.fromString(string).parseItem().getType();
 			} else {
 				Material mat = Material.getMaterial(string.toUpperCase());
 				if (mat == null) return null;
-				item.id = mat.getId();
+				item.id = mat;
 			}
 		}
 		return item;
@@ -183,13 +183,56 @@ public class MagicItemNameResolver implements ItemNameResolver {
 	}
 	
 	private MaterialData resolveBlockData(Material type, String sdata) {
-		if (type == Material.LOG || type == Material.SAPLING || type == Material.WOOD) {
-			return getTree(sdata);
-		} else if (type == Material.LEAVES) {
-			return getLeaves(sdata);
-		} else if (type == Material.WOOL) {
-			return getWool(sdata);
-		} else if (RegexUtil.matches(BLOCK_BYTE_DATA_PATTERN, sdata)) {
+		SpellMaterial mat = SpellMaterial.fromMaterial(type);
+		switch (mat) {
+			case OAK_LOG:
+			case SPRUCE_LOG:
+			case BIRCH_LOG:
+			case JUNGLE_LOG:
+			case ACACIA_LOG:
+			case DARK_OAK_LOG:
+			case OAK_SAPLING:
+			case SPRUCE_SAPLING:
+			case BIRCH_SAPLING:
+			case JUNGLE_SAPLING:
+			case ACACIA_SAPLING:
+			case DARK_OAK_SAPLING:
+			case OAK_PLANKS:
+			case SPRUCE_PLANKS:
+			case BIRCH_PLANKS:
+			case JUNGLE_PLANKS:
+			case ACACIA_PLANKS:
+			case DARK_OAK_PLANKS:
+				return getTree(sdata);
+			case OAK_LEAVES:
+			case SPRUCE_LEAVES:
+			case BIRCH_LEAVES:
+			case JUNGLE_LEAVES:
+			case ACACIA_LEAVES:
+			case DARK_OAK_LEAVES:
+				return getLeaves(sdata);
+			case WHITE_WOOL:
+			case ORANGE_WOOL:
+			case MAGENTA_WOOL:
+			case LIGHT_BLUE_WOOL:
+			case YELLOW_WOOL:
+			case LIME_WOOL:
+			case PINK_WOOL:
+			case GRAY_WOOL:
+			case LIGHT_GRAY_WOOL:
+			case CYAN_WOOL:
+			case PURPLE_WOOL:
+			case BLUE_WOOL:
+			case BROWN_WOOL:
+			case GREEN_WOOL:
+			case RED_WOOL:
+			case BLACK_WOOL:
+				return getWool(sdata);
+			default:
+				break;
+		}
+
+		if (RegexUtil.matches(BLOCK_BYTE_DATA_PATTERN, sdata)) {
 			return new MaterialData(type, Byte.parseByte(sdata));
 		} else {
 			return new MaterialData(type);
@@ -197,16 +240,33 @@ public class MagicItemNameResolver implements ItemNameResolver {
 	}
 	
 	private MaterialData resolveItemData(Material type, String sdata) {
-		if (type == Material.INK_SACK) {
-			return getDye(sdata);
-		} else {
-			return null;
+		SpellMaterial mat = SpellMaterial.fromMaterial(type);
+		switch (mat) {
+			case INK_SAC:
+			case ROSE_RED:
+			case CACTUS_GREEN:
+			case COCOA_BEANS:
+			case LAPIS_LAZULI:
+			case PURPLE_DYE:
+			case CYAN_DYE:
+			case LIGHT_GRAY_DYE:
+			case GRAY_DYE:
+			case PINK_DYE:
+			case LIME_DYE:
+			case DANDELION_YELLOW:
+			case LIGHT_BLUE_DYE:
+			case MAGENTA_DYE:
+			case ORANGE_DYE:
+			case BONE_MEAL:
+				return getDye(sdata);
+			default:
+				return null;
 		}
 	}
 	
 	private MagicMaterial resolveUnknown(String stype, String sdata) {
 		try {
-			int type = Integer.parseInt(stype);
+			Material type = SpellMaterial.fromString(stype).parseItem().getType();
 			if (sdata.equals("*")) {
 				return new MagicUnknownAnyDataMaterial(type);
 			} else {

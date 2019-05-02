@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.nisovin.magicspells.util.BlockUtils;
 import com.nisovin.magicspells.util.LocationUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -120,7 +121,7 @@ public class PulserSpell extends TargetedSpell implements TargetedLocationSpell 
 			} else if (yOffset < 0) {
 				target = target.getRelative(BlockFace.DOWN, yOffset);
 			}
-			if (target.getType() != Material.AIR && target.getType() != Material.SNOW && target.getType() != Material.LONG_GRASS) return noTarget(player);
+			if (target.getType() != Material.AIR && target.getType() != Material.SNOW && !BlockUtils.isPlant(target.getType())) return noTarget(player);
 			if (target != null) {
 				SpellTargetLocationEvent event = new SpellTargetLocationEvent(this, player, target.getLocation(), power);
 				EventUtil.call(event);
@@ -152,12 +153,12 @@ public class PulserSpell extends TargetedSpell implements TargetedLocationSpell 
 		} else if (yOffset < 0) {
 			block = block.getRelative(BlockFace.DOWN, yOffset);
 		}
-		if (block.getType() == Material.AIR || block.getType() == Material.SNOW || block.getType() == Material.LONG_GRASS) {
+		if (block.getType() == Material.AIR || block.getType() == Material.SNOW || BlockUtils.isPlant(block.getType())) {
 			createPulser(caster, block, power);
 			return true;
 		}
 		block = block.getRelative(BlockFace.UP);
-		if (block.getType() == Material.AIR || block.getType() == Material.SNOW || block.getType() == Material.LONG_GRASS) {
+		if (block.getType() == Material.AIR || block.getType() == Material.SNOW || BlockUtils.isPlant(block.getType())) {
 			createPulser(caster, block, power);
 			return true;
 		}

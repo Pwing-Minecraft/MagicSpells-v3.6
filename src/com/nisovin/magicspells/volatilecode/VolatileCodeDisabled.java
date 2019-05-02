@@ -311,5 +311,9 @@ public class VolatileCodeDisabled implements VolatileCodeHandle {
 	public void setTexture(SkullMeta meta, String texture, String signature, String uuid, String name) {
 		
 	}
-	
+
+	@Override
+	public void setBlockFromFallingBlock(Block block, FallingBlock fallingBlock, boolean physics) {
+		block.setTypeIdAndData(fallingBlock.getBlockId(), fallingBlock.getBlockData(), physics);
+	}
 }

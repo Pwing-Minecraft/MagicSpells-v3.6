@@ -3,6 +3,7 @@ package com.nisovin.magicspells.spells.targeted;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.nisovin.magicspells.materials.SpellMaterial;
 import org.bukkit.EntityEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -47,9 +48,9 @@ public class GeyserSpell extends TargetedSpell implements TargetedEntitySpell {
 		geyserHeight = getConfigInt("geyser-height", 4);
 		String s = getConfigString("geyser-type", "water");
 		if (s.equalsIgnoreCase("lava")) {
-			geyserType = new MagicBlockMaterial(new MaterialData(Material.STATIONARY_LAVA));
+			geyserType = new MagicBlockMaterial(new MaterialData(SpellMaterial.LAVA.parseMaterial()));
 		} else if (s.equalsIgnoreCase("water")) {
-			geyserType = new MagicBlockMaterial(new MaterialData(Material.STATIONARY_WATER));
+			geyserType = new MagicBlockMaterial(new MaterialData(SpellMaterial.WATER.parseMaterial()));
 		} else {
 			geyserType = MagicSpells.getItemNameResolver().resolveBlock(s);
 		}

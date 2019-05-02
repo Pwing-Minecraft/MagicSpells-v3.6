@@ -1,5 +1,6 @@
 package com.nisovin.magicspells.spells.targeted;
 
+import com.nisovin.magicspells.materials.SpellMaterial;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -83,9 +84,9 @@ public class FarmSpell extends TargetedSpell implements TargetedLocationSpell {
 		for (int x = cx - radius; x <= cx + radius; x++) {
 			for (int z = cz - radius; z <= cz + radius; z++) {
 				Block b = center.getWorld().getBlockAt(x, y, z);
-				if (b.getType() != Material.SOIL) {
+				if (b.getType() != SpellMaterial.FARMLAND.parseMaterial()) {
 					b = b.getRelative(BlockFace.DOWN);
-					if (b.getType() != Material.SOIL) continue;
+					if (b.getType() != SpellMaterial.FARMLAND.parseMaterial()) continue;
 				}
 				b = b.getRelative(BlockFace.UP);
 				if (b.getType() == Material.AIR) {
@@ -94,12 +95,12 @@ public class FarmSpell extends TargetedSpell implements TargetedLocationSpell {
 						if (growth > 1) BlockUtils.setGrowthLevel(b, growth - 1);
 						count++;
 					}
-				} else if (((growWheat && b.getType() == Material.CROPS) || (growBeetroot && b.getType() == Material.BEETROOT) || (growCarrots && b.getType() == Material.CARROT) || (growPotatoes && b.getType() == Material.POTATO)) && BlockUtils.getGrowthLevel(b) < 7) {
+				} else if (((growWheat && b.getType() == SpellMaterial.WHEAT.parseMaterial()) || (growBeetroot && b.getType() == Material.BEETROOT) || (growCarrots && b.getType() == Material.CARROT) || (growPotatoes && b.getType() == Material.POTATO)) && BlockUtils.getGrowthLevel(b) < 7) {
 					int newGrowth = BlockUtils.getGrowthLevel(b) + growth;
 					if (newGrowth > 7) newGrowth = 7;
 					BlockUtils.setGrowthLevel(b, newGrowth);
 					count++;
-				} else if (growWart && b.getType() == Material.NETHER_WARTS) {
+				} else if (growWart && b.getType() == SpellMaterial.NETHER_WART.parseMaterial()) {
 					if (BlockUtils.growWarts((NetherWarts) b, growth)) count++;
 				}
 			}

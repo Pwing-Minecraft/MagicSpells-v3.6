@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -123,7 +124,7 @@ public class MagicSpells extends JavaPlugin {
 	boolean ignoreDefaultBindings;
 	boolean showStrCostOnMissingReagents;
 	HashSet<Material> losTransparentBlocks; // TODO: fix
-	List<Integer> ignoreCastItemDurability; // TODO: fix
+	List<Material> ignoreCastItemDurability; // TODO: fix
 	HashMap<EntityType, String> entityNames;
 	int globalCooldown;
 	boolean castOnAnimate;
@@ -236,62 +237,34 @@ public class MagicSpells extends JavaPlugin {
 			MagicSpells.log(Level.SEVERE, "Error in config file, stopping config load");
 			return;
 		}
-		
-		// FIXME clean this up. a lot
-		boolean v1_9 = false;
-		if (config.getBoolean("general.enable-volatile-features", true)) {
-			try {
-				Class.forName("net.minecraft.server.v1_12_R1.MinecraftServer");
-				v1_9 = true;
-				volatileCodeHandle = new VolatileCodeEnabled_1_12_R1(config);
-			} catch (ClassNotFoundException e_1_12_1) {
-				try {
-					Class.forName("net.minecraft.server.v1_11_R1.MinecraftServer");
-					v1_9 = true;
-					volatileCodeHandle = new VolatileCodeEnabled_1_11_R1(config);
-				} catch (ClassNotFoundException e_1_11_1) {
-					try {
-						Class.forName("net.minecraft.server.v1_10_R1.MinecraftServer");
-						volatileCodeHandle = new VolatileCodeEnabled_1_10_R1(config);
-						v1_9 = true;
-					} catch (ClassNotFoundException e_1_10_1) {
-						try {
-							Class.forName("net.minecraft.server.v1_9_R2.MinecraftServer");
-							volatileCodeHandle = new VolatileCodeEnabled_1_9_R2();
-							v1_9 = true;
-						} catch (ClassNotFoundException e_1_9_2) {
-							try {
-								Class.forName("net.minecraft.server.v1_9_R1.MinecraftServer");
-								volatileCodeHandle = new VolatileCodeEnabled_1_9_R1();
-								v1_9 = true;
-							} catch (ClassNotFoundException e_1_9_r1) {
-								try {
-									Class.forName("net.minecraft.server.v1_8_R3.MinecraftServer");
-									volatileCodeHandle = new VolatileCodeEnabled_1_8_R3();
-								} catch (ClassNotFoundException e_1_8_r3) {
-									try {
-										Class.forName("net.minecraft.server.v1_8_R1.MinecraftServer");
-										volatileCodeHandle = new VolatileCodeEnabled_1_8_R1();
-									} catch (ClassNotFoundException e_1_8_r1) {
-										error("This MagicSpells version is not fully compatible with this server version.");
-										error("Some features have been disabled.");
-										error("See http://nisovin.com/magicspells/volatilefeatures for more information.");
-										if (CompatBasics.pluginEnabled("ProtocolLib")) {
-											error("ProtocolLib found: some compatibility re-enabled");
-											volatileCodeHandle = new VolatileCodeProtocolLib();
-										} else {
-											volatileCodeHandle = new VolatileCodeDisabled();
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		} else {
+
+		boolean v1_9 = true;
+		String nms = Util.getNMSPackage();
+		try {
+			Class<?> volatileCode = Class.forName("com.nisovin.magicspells.volatilecode.VolatileCodeEnabled_" + nms.replace("v", ""));
+			Constructor<?> constructor = volatileCode.getConstructor(MagicConfig.class);
+			constructor.setAccessible(true);
+
+			volatileCodeHandle = ((VolatileCodeHandle) constructor.newInstance(config));
+
+			if (nms.equals("v1_8_R1") || nms.equals("v1_8_R3"))
+				v1_9 = false;
+
+		} catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException ex) {
+			v1_9 = false;
 			volatileCodeHandle = new VolatileCodeDisabled();
+			error("This MagicSpells version is not fully compatible with this server version.");
+			error("Some features have been disabled.");
+			error("See http://nisovin.com/magicspells/volatilefeatures for more information.");
+			ex.printStackTrace();
+
+			if (CompatBasics.pluginEnabled("ProtocolLib")) {
+				error("ProtocolLib found: some compatibility re-enabled");
+				volatileCodeHandle = new VolatileCodeProtocolLib();
+			}
 		}
+
+
 		HandHandler.initialize();
 		
 		debug = config.getBoolean("general.debug", false);
@@ -329,7 +302,7 @@ public class MagicSpells extends JavaPlugin {
 		showStrCostOnMissingReagents = config.getBoolean("general.show-str-cost-on-missing-reagents", true);
 		losTransparentBlocks = Util.getMaterialList(config.getStringList("general.los-transparent-blocks", new ArrayList<>()), HashSet::new);
 		if (losTransparentBlocks.isEmpty()) losTransparentBlocks.add(Material.AIR);
-		ignoreCastItemDurability = config.getIntList("general.ignore-cast-item-durability", new ArrayList<>());
+		ignoreCastItemDurability = Util.getMaterialList(config.getStringList("general.ignore-cast-item-durability", new ArrayList<String>()), ArrayList::new);
 		globalCooldown = config.getInt("general.global-cooldown", 500);
 		castOnAnimate = config.getBoolean("general.cast-on-animate", false);
 		useExpBarAsCastTimeBar = config.getBoolean("general.use-exp-bar-as-cast-time-bar", true);
@@ -813,7 +786,7 @@ public class MagicSpells extends JavaPlugin {
 	 * @param type the type to check
 	 * @return whether to ignore durability
 	 */
-	public static boolean ignoreCastItemDurability(int type) {
+	public static boolean ignoreCastItemDurability(Material type) {
 		return plugin.ignoreCastItemDurability != null && plugin.ignoreCastItemDurability.contains(type);
 	}
 	

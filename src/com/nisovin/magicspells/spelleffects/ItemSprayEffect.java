@@ -3,7 +3,9 @@ package com.nisovin.magicspells.spelleffects;
 import java.util.Arrays;
 import java.util.Random;
 
+import com.nisovin.magicspells.materials.SpellMaterial;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Item;
 import org.bukkit.util.Vector;
@@ -87,20 +89,20 @@ public class ItemSprayEffect extends SpellEffect {
 	public void loadFromString(String string) {
 		if (string != null) {
 			String[] data = string.split(" ");
-			int type = 331;
+			Material type = Material.REDSTONE;
 			short dura = 0;
 			if (data.length >= 1) {
 				if (data[0].contains(":")) {
 					try {
 						String[] typeData = data[0].split(":");
-						type = Integer.parseInt(typeData[0]);
+						type = SpellMaterial.fromString(data[0]).parseItem().getType();
 						dura = Short.parseShort(typeData[1]);
 					} catch (NumberFormatException e) {
 						DebugHandler.debugNumberFormat(e);
 					}
 				} else {
 					try {
-						type = Integer.parseInt(data[0]);
+						type = SpellMaterial.fromString(data[0]).parseItem().getType();
 					} catch (NumberFormatException e) {
 						DebugHandler.debugNumberFormat(e);
 					}
@@ -148,7 +150,7 @@ public class ItemSprayEffect extends SpellEffect {
 		Location loc = location.clone().add(0, 1, 0);
 		final Item[] items = new Item[num];
 		for (int i = 0; i < num; i++) {
-			items[i] = loc.getWorld().dropItem(loc, mat.toItemStack(0));
+			items[i] = loc.getWorld().dropItem(loc, mat.toItemStack(1));
 			items[i].setVelocity(new Vector((rand.nextDouble() - .5) * force, (rand.nextDouble() - .5) * force, (rand.nextDouble() - .5) * force));
 			items[i].setPickupDelay(duration << 1);
 		}

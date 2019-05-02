@@ -218,11 +218,7 @@ public class VolatileCodeEnabled_1_9_R1 implements VolatileCodeHandle {
 
 	@Override
 	public void pressPressurePlate(Block block) {
-		this.fallback.pressPressurePlate(block);
-		//block.setData((byte) (block.getData() ^ 0x1));
-		//net.minecraft.server.v1_9_R1.World w = ((CraftWorld)block.getWorld()).getHandle();
-		//w.applyPhysics(block.getX(), block.getY(), block.getZ(), net.minecraft.server.v1_9_R1.Block.getById(block.getType().getId()));
-		//w.applyPhysics(block.getX(), block.getY()-1, block.getZ(), net.minecraft.server.v1_9_R1.Block.getById(block.getType().getId()));
+		block.setData((byte) (block.getData() ^ 0x1));
 	}
 
 	@Override
@@ -858,4 +854,8 @@ public class VolatileCodeEnabled_1_9_R1 implements VolatileCodeHandle {
 		}
 	}
 
+	@Override
+	public void setBlockFromFallingBlock(Block block, FallingBlock fallingBlock, boolean physics) {
+		block.setTypeIdAndData(fallingBlock.getBlockId(), fallingBlock.getBlockData(), physics);
+	}
 }

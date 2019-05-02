@@ -209,8 +209,9 @@ public class PasteSpell extends TargetedSpell implements TargetedLocationSpell {
 		}
 		
 		private void setBlockStateFromWorldEditBlock(BlockState state, BaseBlock block) {
-			state.setTypeId(block.getId());
-			state.setRawData((byte)block.getData());
+			// TODO: Fix this later as you cannot set as ID in 1.13
+			// state.setTypeId(block.getId());
+			// state.setRawData((byte)block.getData());
 		}
 		
 	}
