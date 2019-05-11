@@ -508,6 +508,11 @@ public class VolatileCodeEnabled_1_9_R2 implements VolatileCodeHandle {
 	}
 
 	@Override
+	public IWorldGuardHandler getWorldGuardHandler() {
+		return fallback.getWorldGuardHandler();
+	}
+
+	@Override
 	public ItemStack addAttributes(ItemStack item, String[] names, String[] types, double[] amounts, int[] operations, String[] slots) {
 		if (!(item instanceof CraftItemStack)) item = CraftItemStack.asCraftCopy(item);
 		NBTTagCompound tag = getTag(item);

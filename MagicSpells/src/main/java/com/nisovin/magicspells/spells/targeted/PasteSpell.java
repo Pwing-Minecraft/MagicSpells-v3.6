@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.nisovin.magicspells.util.TimeUtil;
-import org.bukkit.Effect;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
@@ -17,13 +15,8 @@ import com.nisovin.magicspells.spelleffects.EffectPosition;
 import com.nisovin.magicspells.spells.TargetedLocationSpell;
 import com.nisovin.magicspells.spells.TargetedSpell;
 import com.nisovin.magicspells.util.MagicConfig;
-import com.sk89q.worldedit.CuboidClipboard;
-import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.Vector;
-import com.sk89q.worldedit.blocks.BaseBlock;
-import com.sk89q.worldedit.bukkit.BukkitWorld;
-import com.sk89q.worldedit.schematic.SchematicFormat;
 
+// FIXME: Fix this spell, needs an abstract worldedit class for pasting
 public class PasteSpell extends TargetedSpell implements TargetedLocationSpell {
 
 	File file;
@@ -112,6 +105,7 @@ public class PasteSpell extends TargetedSpell implements TargetedLocationSpell {
 	}
 	
 	private boolean pasteInstant(Location target) {
+		/*
 		try {
 			CuboidClipboard cuboid = SchematicFormat.MCEDIT.load(file);
 			final EditSession session = new EditSession(new BukkitWorld(target.getWorld()), maxBlocks);
@@ -124,6 +118,8 @@ public class PasteSpell extends TargetedSpell implements TargetedLocationSpell {
 			e.printStackTrace();
 			return false;
 		}
+		*/
+		return false;
 	}
 	
 	private boolean pasteOverTime(Location target) {
@@ -146,6 +142,7 @@ public class PasteSpell extends TargetedSpell implements TargetedLocationSpell {
 		int taskId;
 		
 		public Builder(Location target) throws Exception {
+			/*
 			this.center = target.getBlock();
 			
 			CuboidClipboard clipboard = SchematicFormat.MCEDIT.load(file);
@@ -182,9 +179,11 @@ public class PasteSpell extends TargetedSpell implements TargetedLocationSpell {
 			blocks.addAll(air);
 			blocks.addAll(solids);
 			blocks.addAll(nonsolids);
+			*/
 		}
 		
 		public void build() {
+			/*
 			taskId = MagicSpells.scheduleRepeatingTask(new Runnable() {
 				@Override
 				public void run() {
@@ -206,14 +205,16 @@ public class PasteSpell extends TargetedSpell implements TargetedLocationSpell {
 					}
 				}
 			}, 1, tickInterval);
+			*/
 		}
-		
+
+		/*
 		private void setBlockStateFromWorldEditBlock(BlockState state, BaseBlock block) {
 			// TODO: Fix this later as you cannot set as ID in 1.13
 			// state.setTypeId(block.getId());
 			// state.setRawData((byte)block.getData());
 		}
-		
+		*/
 	}
 
 }

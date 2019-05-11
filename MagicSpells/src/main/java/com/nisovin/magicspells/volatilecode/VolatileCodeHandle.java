@@ -65,7 +65,9 @@ public interface VolatileCodeHandle {
 	void setKiller(LivingEntity entity, Player killer);
 	
 	IDisguiseManager getDisguiseManager(MagicConfig config);
-	
+
+	IWorldGuardHandler getWorldGuardHandler();
+
 	void playDragonDeathEffect(Location location);
 	
 	// TODO this should be moved to it's own handler

@@ -1,5 +1,7 @@
 package com.nisovin.magicspells.volatilecode;
 
+import com.nisovin.magicspells.MagicSpells;
+import com.nisovin.magicspells.util.compat.CompatBasics;
 import org.bukkit.Color;
 import org.bukkit.EntityEffect;
 import org.bukkit.FireworkEffect;
@@ -189,6 +191,29 @@ public class VolatileCodeDisabled implements VolatileCodeHandle {
 	@Override
 	public DisguiseManager getDisguiseManager(MagicConfig config) {
 		return null;
+	}
+
+	@Override
+	public IWorldGuardHandler getWorldGuardHandler() {
+		IWorldGuardHandler handler = new WorldGuardHandlerDisabled();
+
+		Class<?> clazz = null;
+		String version = CompatBasics.getPlugin("WorldGuard").getDescription().getVersion();
+		try {
+			if (version.startsWith("7")) {
+				clazz = Class.forName("com.nisovin.magicspells.volatilecode.WorldGuardHandler_v7");
+			} else if (version.startsWith("6")) {
+				clazz = Class.forName("com.nisovin.magicspells.volatilecode.WorldGuardHandler_v6");
+			}
+
+			handler = (IWorldGuardHandler) clazz.newInstance();
+			return handler;
+		} catch (Exception ex) {
+			MagicSpells.plugin.getLogger().warning("Could not properly hook into WorldGuard. Version " + version + " was detected, however MagicSpells requires WorldGuard v6 for 1.8 - 1.12 or WorldGuard v7 for 1.13+.");
+			ex.printStackTrace();
+		}
+
+		return handler;
 	}
 
 	@Override

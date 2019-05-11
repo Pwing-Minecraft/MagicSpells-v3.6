@@ -3,9 +3,9 @@ package com.nisovin.magicspells.castmodifiers.conditions;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.nisovin.magicspells.MagicSpells;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.protection.flags.BooleanFlag;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
@@ -16,7 +16,7 @@ public class WorldGuardBooleanFlagCondition extends AbstractWorldGuardFlagCondit
 	static Map<String, BooleanFlag> nameMap;
 	static {
 		nameMap = new HashMap<>();
-		for (Flag<?> f: DefaultFlag.getFlags()) {
+		for (Flag<?> f: MagicSpells.getVolatileCodeHandler().getWorldGuardHandler().getFlags()) {
 			if (f instanceof BooleanFlag) {
 				nameMap.put(f.getName().toLowerCase(), (BooleanFlag)f);
 			}
