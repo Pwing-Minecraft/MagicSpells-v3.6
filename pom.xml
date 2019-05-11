@@ -15,11 +15,11 @@
     <modules>
         <module>dist</module>
         <module>MagicSpells</module>
-        <!-- <module>MagicSpells-factions</module> -->
-        <!-- <module>MagicSpells-memory</module> -->
-        <!-- <module>MagicSpells-shop</module> -->
-        <!-- <module>MagicSpells-teams</module> -->
-        <!-- <module>MagicSpells-towny</module> -->
+        <module>MagicSpells-factions</module>
+        <module>MagicSpells-memory</module>
+        <module>MagicSpells-shop</module>
+        <module>MagicSpells-teams</module>
+        <module>MagicSpells-towny</module>
         <module>modules/v1_8_R1</module>
         <module>modules/v1_8_R3</module>
         <module>modules/v1_9_R1</module>
@@ -29,7 +29,7 @@
         <module>modules/v1_12_R1</module>
         <module>modules/v1_13_R1</module>
         <module>modules/v1_13_R2</module>
-        <!-- <module>modules/v1_14_R1</module> -->
+        <module>modules/v1_14_R1</module>
     </modules>
     <repositories>
         <repository>
@@ -67,6 +67,10 @@
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io/</url>
+        </repository>
+        <repository>
+            <id>towny-repo</id>
+            <url>https://empcraft.com/maven2/</url>
         </repository>
     </repositories>
 </project>

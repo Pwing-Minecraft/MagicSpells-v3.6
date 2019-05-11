@@ -22,6 +22,36 @@
         </dependency>
         <dependency>
             <groupId>com.nisovin.magicspells</groupId>
+            <artifactId>MagicSpells-factions</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.nisovin.magicspells</groupId>
+            <artifactId>MagicSpells-shop</artifactId>
+            <version>1.6</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.nisovin.magicspells</groupId>
+            <artifactId>MagicSpells-memory</artifactId>
+            <version>1.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.nisovin.magicspells</groupId>
+            <artifactId>MagicSpells-teams</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.nisovin.magicspells</groupId>
+            <artifactId>MagicSpells-towny</artifactId>
+            <version>1.3</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.nisovin.magicspells</groupId>
             <artifactId>MagicSpells-v1_8_R1</artifactId>
             <version>v1_8_R1</version>
             <scope>compile</scope>
@@ -74,6 +104,12 @@
             <version>v1_13_R2</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.nisovin.magicspells</groupId>
+            <artifactId>MagicSpells-v1_14_R1</artifactId>
+            <version>v1_14_R1</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
     <build>
         <finalName>MagicSpells</finalName>
@@ -101,6 +137,13 @@
                                     <include>com.nisovin.magicspells:MagicSpells</include>
                                     <include>com.nisovin.magicspells:MagicSpells-*</include>
                                 </includes>
+                                <excludes>
+                                    <exclude>com.nisovin.magicspells:MagicSpells-factions</exclude>
+                                    <exclude>com.nisovin.magicspells:MagicSpells-memory</exclude>
+                                    <exclude>com.nisovin.magicspells:MagicSpells-shop</exclude>
+                                    <exclude>com.nisovin.magicspells:MagicSpells-teams</exclude>
+                                    <exclude>com.nisovin.magicspells:MagicSpells-towny</exclude>
+                                </excludes>
                             </artifactSet>
                         </configuration>
                     </execution>
