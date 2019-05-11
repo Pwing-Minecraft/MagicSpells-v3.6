@@ -3,6 +3,7 @@ package com.nisovin.magicspells.shop;
 import java.io.File;
 import java.util.regex.Pattern;
 
+import com.nisovin.magicspells.materials.SpellMaterial;
 import com.nisovin.magicspells.util.RegexUtil;
 import com.nisovin.magicspells.util.compat.EventUtil;
 import org.bukkit.ChatColor;
@@ -97,8 +98,10 @@ public class MagicSpellsShop extends JavaPlugin implements Listener {
 		// Check for right-click on sign
 		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 		Block block = event.getClickedBlock();
-		if (block.getType() != Material.WALL_SIGN && block.getType() != Material.SIGN_POST) return;
-		
+		// Use matchMaterial instead of ID's for 1.13 support
+		// since matchMaterial is used, versions below will still have ID support
+		if (block.getType() != Material.WALL_SIGN && block.getType() != SpellMaterial.SIGN.parseMaterial()) return;
+
 		// Get shop sign
 		Sign sign = (Sign)block.getState();
 		String[] lines = sign.getLines();		
@@ -267,7 +270,7 @@ public class MagicSpellsShop extends JavaPlugin implements Listener {
 		if (event.isCancelled()) return;
 		
 		Material mat = event.getBlock().getType();
-		if (mat != Material.WALL_SIGN && mat != Material.SIGN_POST) return;
+		if (mat != Material.WALL_SIGN && mat != SpellMaterial.SIGN.parseMaterial()) return;
 		
 		Sign sign = (Sign)event.getBlock().getState();
 		String line = sign.getLine(0);
