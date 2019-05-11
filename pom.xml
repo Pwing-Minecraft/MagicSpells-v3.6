@@ -18,7 +18,7 @@
         <module>MagicSpells-factions</module>
         <module>MagicSpells-memory</module>
         <module>MagicSpells-shop</module>
-        <!-- <module>MagicSpells-teams</module> -->
+        <module>MagicSpells-teams</module>
         <!-- <module>MagicSpells-towny</module> -->
         <module>modules/v1_8_R1</module>
         <module>modules/v1_8_R3</module>

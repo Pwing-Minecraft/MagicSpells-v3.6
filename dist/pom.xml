@@ -40,6 +40,12 @@
         </dependency>
         <dependency>
             <groupId>com.nisovin.magicspells</groupId>
+            <artifactId>MagicSpells-teams</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.nisovin.magicspells</groupId>
             <artifactId>MagicSpells-v1_8_R1</artifactId>
             <version>v1_8_R1</version>
             <scope>compile</scope>
