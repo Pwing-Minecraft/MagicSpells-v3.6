@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import com.nisovin.magicspells.MagicSpells;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
@@ -67,11 +68,10 @@ public class TreeSpell extends TargetedSpell implements TargetedLocationSpell {
 		if (target.getType() != Material.AIR) return false;
 		
 		// Grow tree
-		// TODO: Reimplment the TreeWatcher in the form of VolatileCode
 		Location loc = target.getLocation();				
 		if (speed > 0) {
 			List<BlockState> blockStates = new ArrayList<>();
-			target.getWorld().generateTree(loc, treeType/*, new TreeWatch(loc, blockStates) */);
+			target.getWorld().generateTree(loc, treeType, MagicSpells.getVolatileCodeHandler().getTreeWatcher(loc, blockStates));
 			if (!blockStates.isEmpty()) {
 				new GrowAnimation(loc.getBlockX(), loc.getBlockZ(), blockStates, speed);
 				return true;
@@ -131,60 +131,4 @@ public class TreeSpell extends TargetedSpell implements TargetedLocationSpell {
 		}
 		
 	}
-
-	/*
-	private class TreeWatch implements BlockChangeDelegate {
-
-		private Location loc;
-		private List<BlockState> blockStates;
-		
-		public TreeWatch(Location loc, List<BlockState> blockStates) {
-			this.loc = loc;
-			this.blockStates = blockStates;
-		}
-		
-		@Override
-		public int getHeight() {
-			return loc.getWorld().getMaxHeight();
-		}
-
-		@Override
-		public int getTypeId(int x, int y, int z) {
-			return loc.getWorld().getBlockTypeIdAt(x, y, z);
-		}
-
-		@Override
-		public boolean isEmpty(int x, int y, int z) {
-			return getTypeId(x, y, z) == 0;
-		}
-
-		@Override
-		public boolean setRawTypeId(int x, int y, int z, int id) {
-			BlockState state = loc.getWorld().getBlockAt(x, y, z).getState();
-			state.setTypeId(id);
-			blockStates.add(state);
-			return true;
-		}
-
-		@Override
-		public boolean setRawTypeIdAndData(int x, int y, int z, int id, int data) {
-			BlockState state = loc.getWorld().getBlockAt(x, y, z).getState();
-			state.setTypeId(id);
-			state.setRawData((byte)data);
-			blockStates.add(state);
-			return true;
-		}
-
-		@Override
-		public boolean setTypeId(int x, int y, int z, int id) {
-			return setRawTypeId(x, y, z, id);
-		}
-
-		@Override
-		public boolean setTypeIdAndData(int x, int y, int z, int id, int data) {
-			return setRawTypeIdAndData(x, y, z, id, data);
-		}
-		
-	}
-	*/
 }

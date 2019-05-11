@@ -1,7 +1,9 @@
 package com.nisovin.magicspells.volatilecode;
 
+import org.bukkit.BlockChangeDelegate;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
@@ -15,6 +17,8 @@ import org.bukkit.util.Vector;
 
 import com.nisovin.magicspells.util.IDisguiseManager;
 import com.nisovin.magicspells.util.MagicConfig;
+
+import java.util.List;
 
 public interface VolatileCodeHandle {
 	
@@ -120,4 +124,6 @@ public interface VolatileCodeHandle {
 	void setSkin(Player player, String skin, String signature);
 
 	void setBlockFromFallingBlock(Block block, FallingBlock fallingBlock, boolean physics);
+
+	BlockChangeDelegate getTreeWatcher(Location loc, List<BlockState> states);
 }

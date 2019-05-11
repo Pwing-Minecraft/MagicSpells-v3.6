@@ -44,6 +44,7 @@ import net.minecraft.server.v1_14_R1.PathfinderGoalLookAtPlayer;
 import net.minecraft.server.v1_14_R1.PathfinderGoalSelector;
 import net.minecraft.server.v1_14_R1.PlayerConnection;
 import net.minecraft.server.v1_14_R1.Vec3D;
+import org.bukkit.BlockChangeDelegate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -51,6 +52,8 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.attribute.AttributeModifier.Operation;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Powerable;
 import org.bukkit.craftbukkit.v1_14_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
@@ -886,5 +889,34 @@ public class VolatileCodeEnabled_1_14_R1 implements VolatileCodeHandle {
 	@Override
 	public void setBlockFromFallingBlock(Block block, FallingBlock fallingBlock, boolean physics) {
 		block.setBlockData(fallingBlock.getBlockData(), physics);
+	}
+
+	@Override
+	public BlockChangeDelegate getTreeWatcher(Location loc, List<BlockState> states) {
+		return new BlockChangeDelegate() {
+
+			@Override
+			public boolean setBlockData(int x, int y, int z, BlockData blockData) {
+				Block block = loc.getWorld().getBlockAt(x, y, z);
+				block.setBlockData(blockData);
+				states.add(block.getState());
+				return true;
+			}
+
+			@Override
+			public BlockData getBlockData(int x, int y, int z) {
+				return loc.getWorld().getBlockAt(x, y, z).getBlockData();
+			}
+
+			@Override
+			public int getHeight() {
+				return loc.getWorld().getMaxHeight();
+			}
+
+			@Override
+			public boolean isEmpty(int x, int y, int z) {
+				return getBlockData(x, y, z) == null;
+			}
+		};
 	}
 }

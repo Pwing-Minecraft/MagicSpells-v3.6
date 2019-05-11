@@ -40,12 +40,14 @@ import net.minecraft.server.v1_9_R2.PathfinderGoalSelector;
 import net.minecraft.server.v1_9_R2.PlayerConnection;
 import net.minecraft.server.v1_9_R2.EntityCreature;
 import net.minecraft.server.v1_9_R2.PathEntity;
+import org.bukkit.BlockChangeDelegate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.attribute.AttributeModifier.Operation;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.v1_9_R2.CraftServer;
 import org.bukkit.craftbukkit.v1_9_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_9_R2.entity.CraftCreature;
@@ -870,5 +872,10 @@ public class VolatileCodeEnabled_1_9_R2 implements VolatileCodeHandle {
 	@Override
 	public void setBlockFromFallingBlock(Block block, FallingBlock fallingBlock, boolean physics) {
 		block.setTypeIdAndData(fallingBlock.getBlockId(), fallingBlock.getBlockData(), physics);
+	}
+
+	@Override
+	public BlockChangeDelegate getTreeWatcher(Location loc, List<BlockState> states) {
+		return this.fallback.getTreeWatcher(loc, states);
 	}
 }

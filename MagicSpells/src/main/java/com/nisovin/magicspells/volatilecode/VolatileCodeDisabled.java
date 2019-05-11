@@ -2,6 +2,7 @@ package com.nisovin.magicspells.volatilecode;
 
 import com.nisovin.magicspells.MagicSpells;
 import com.nisovin.magicspells.util.compat.CompatBasics;
+import org.bukkit.BlockChangeDelegate;
 import org.bukkit.Color;
 import org.bukkit.EntityEffect;
 import org.bukkit.FireworkEffect;
@@ -31,6 +32,8 @@ import org.bukkit.util.Vector;
 
 import com.nisovin.magicspells.util.DisguiseManager;
 import com.nisovin.magicspells.util.MagicConfig;
+
+import java.util.List;
 
 public class VolatileCodeDisabled implements VolatileCodeHandle {
 
@@ -340,5 +343,54 @@ public class VolatileCodeDisabled implements VolatileCodeHandle {
 	@Override
 	public void setBlockFromFallingBlock(Block block, FallingBlock fallingBlock, boolean physics) {
 		block.setTypeIdAndData(fallingBlock.getBlockId(), fallingBlock.getBlockData(), physics);
+	}
+
+	@Override
+	public BlockChangeDelegate getTreeWatcher(Location loc, List<BlockState> states) {
+		return new BlockChangeDelegate() {
+
+
+			@Override
+			public int getHeight() {
+				return loc.getWorld().getMaxHeight();
+			}
+
+			@Override
+			public int getTypeId(int x, int y, int z) {
+				return loc.getWorld().getBlockTypeIdAt(x, y, z);
+			}
+
+			@Override
+			public boolean isEmpty(int x, int y, int z) {
+				return getTypeId(x, y, z) == 0;
+			}
+
+			@Override
+			public boolean setRawTypeId(int x, int y, int z, int id) {
+				BlockState state = loc.getWorld().getBlockAt(x, y, z).getState();
+				state.setTypeId(id);
+				states.add(state);
+				return true;
+			}
+
+			@Override
+			public boolean setRawTypeIdAndData(int x, int y, int z, int id, int data) {
+				BlockState state = loc.getWorld().getBlockAt(x, y, z).getState();
+				state.setTypeId(id);
+				state.setRawData((byte)data);
+				states.add(state);
+				return true;
+			}
+
+			@Override
+			public boolean setTypeId(int x, int y, int z, int id) {
+				return setRawTypeId(x, y, z, id);
+			}
+
+			@Override
+			public boolean setTypeIdAndData(int x, int y, int z, int id, int data) {
+				return setRawTypeIdAndData(x, y, z, id, data);
+			}
+		};
 	}
 }
