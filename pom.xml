@@ -16,7 +16,7 @@
         <module>dist</module>
         <module>MagicSpells</module>
         <module>MagicSpells-factions</module>
-        <!-- <module>MagicSpells-memory</module> -->
+        <module>MagicSpells-memory</module>
         <!-- <module>MagicSpells-shop</module> -->
         <!-- <module>MagicSpells-teams</module> -->
         <!-- <module>MagicSpells-towny</module> -->
