@@ -1,5 +1,6 @@
 package com.nisovin.magicspells.materials;
 
+import com.nisovin.magicspells.MagicSpells;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -984,6 +985,9 @@ public enum SpellMaterial {
             else
                 mat = requestMaterial(split[0], Integer.parseInt(split[1]));
 
+            if (mat == null) {
+                MagicSpells.plugin.getLogger().severe("Could not find material for " + matKey);
+            }
             return mat;
         }
     }

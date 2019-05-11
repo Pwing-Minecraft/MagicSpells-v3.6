@@ -273,7 +273,7 @@ public class MagicItemNameResolver implements ItemNameResolver {
 				short data = sdata.isEmpty() ? 0 : Short.parseShort(sdata);
 				return new MagicUnknownMaterial(type, data);
 			}
-		} catch (NumberFormatException e) {
+		} catch (Exception e) {
 			DebugHandler.debugNumberFormat(e);
 			return null;
 		}
