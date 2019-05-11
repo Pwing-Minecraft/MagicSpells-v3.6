@@ -19,7 +19,7 @@
         <module>MagicSpells-memory</module>
         <module>MagicSpells-shop</module>
         <module>MagicSpells-teams</module>
-        <!-- <module>MagicSpells-towny</module> -->
+        <module>MagicSpells-towny</module>
         <module>modules/v1_8_R1</module>
         <module>modules/v1_8_R3</module>
         <module>modules/v1_9_R1</module>
@@ -67,6 +67,10 @@
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io/</url>
+        </repository>
+        <repository>
+            <id>towny-repo</id>
+            <url>https://empcraft.com/maven2/</url>
         </repository>
     </repositories>
 </project>
