@@ -2,6 +2,7 @@ package com.nisovin.magicspells.volatilecode;
 
 import org.bukkit.BlockChangeDelegate;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
@@ -126,4 +127,6 @@ public interface VolatileCodeHandle {
 	void setBlockFromFallingBlock(Block block, FallingBlock fallingBlock, boolean physics);
 
 	BlockChangeDelegate getTreeWatcher(Location loc, List<BlockState> states);
+
+	Material fromId(int id, byte data);
 }

@@ -47,6 +47,7 @@ import net.minecraft.server.v1_14_R1.Vec3D;
 import org.bukkit.BlockChangeDelegate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -76,6 +77,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.material.MaterialData;
 import org.bukkit.util.Vector;
 
 import java.io.File;
@@ -84,6 +86,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -918,5 +921,15 @@ public class VolatileCodeEnabled_1_14_R1 implements VolatileCodeHandle {
 				return getBlockData(x, y, z) == null;
 			}
 		};
+	}
+
+	@Override
+	public Material fromId(int id, byte data) {
+		for (Material mat : EnumSet.allOf(Material.class)) {
+			if (id == mat.getId())
+				return Bukkit.getUnsafe().fromLegacy(new MaterialData(mat, data));
+		}
+
+		return null;
 	}
 }

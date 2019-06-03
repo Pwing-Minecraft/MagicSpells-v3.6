@@ -393,4 +393,10 @@ public class VolatileCodeDisabled implements VolatileCodeHandle {
 			}
 		};
 	}
+
+	@Override
+	public Material fromId(int id, byte data) {
+		// Breaks in versions 1.13+
+		return Material.matchMaterial(String.valueOf(id));
+	}
 }

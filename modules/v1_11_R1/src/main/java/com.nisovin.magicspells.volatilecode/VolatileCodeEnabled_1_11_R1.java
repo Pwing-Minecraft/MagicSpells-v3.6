@@ -45,6 +45,7 @@ import net.minecraft.server.v1_11_R1.PathEntity;
 import org.bukkit.BlockChangeDelegate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.attribute.AttributeModifier.Operation;
@@ -888,5 +889,10 @@ public class VolatileCodeEnabled_1_11_R1 implements VolatileCodeHandle {
 	@Override
 	public BlockChangeDelegate getTreeWatcher(Location loc, List<BlockState> states) {
 		return this.fallback.getTreeWatcher(loc, states);
+	}
+
+	@Override
+	public Material fromId(int id, byte data) {
+		return fallback.fromId(id, data);
 	}
 }

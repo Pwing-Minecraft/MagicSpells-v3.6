@@ -130,8 +130,18 @@ public class BlockUtils {
 			case TORCH:
 			case FIRE:
 			case REDSTONE_WIRE:
-			case SIGN:
-			case WALL_SIGN:
+			case OAK_SIGN:
+			case SPRUCE_SIGN:
+			case BIRCH_SIGN:
+			case JUNGLE_SIGN:
+			case ACACIA_SIGN:
+			case DARK_OAK_SIGN:
+			case OAK_WALL_SIGN:
+			case SPRUCE_WALL_SIGN:
+			case BIRCH_WALL_SIGN:
+			case JUNGLE_WALL_SIGN:
+			case ACACIA_WALL_SIGN:
+			case DARK_OAK_WALL_SIGN:
 			case LEVER:
 			case STONE_PRESSURE_PLATE:
 			case OAK_PRESSURE_PLATE:

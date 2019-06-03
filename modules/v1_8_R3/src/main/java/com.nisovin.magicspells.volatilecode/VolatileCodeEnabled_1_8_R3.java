@@ -63,6 +63,7 @@ import org.bukkit.BlockChangeDelegate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
@@ -868,5 +869,10 @@ public class VolatileCodeEnabled_1_8_R3 implements VolatileCodeHandle {
 	@Override
 	public BlockChangeDelegate getTreeWatcher(Location loc, List<BlockState> states) {
 		return this.fallback.getTreeWatcher(loc, states);
+	}
+
+	@Override
+	public Material fromId(int id, byte data) {
+		return fallback.fromId(id, data);
 	}
 }
