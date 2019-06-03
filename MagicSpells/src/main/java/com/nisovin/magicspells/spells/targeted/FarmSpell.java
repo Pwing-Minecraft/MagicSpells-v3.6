@@ -65,7 +65,11 @@ public class FarmSpell extends TargetedSpell implements TargetedLocationSpell {
 			}
 			if (block != null) {
 				boolean farmed = farm(block, Math.round(radius * power));
-				if (!farmed) return noTarget(player);
+				// 1.13 does not consider farmland a full block
+				if (!farmed)
+					farmed = farm(block.getLocation().add(0D, 1D, 0D).getBlock(), Math.round(radius * power));
+				if (!farmed)
+					return noTarget(player);
 				playSpellEffects(EffectPosition.CASTER, player);
 				if (targeted) playSpellEffects(EffectPosition.TARGET, block.getLocation());
 			} else {
@@ -95,7 +99,9 @@ public class FarmSpell extends TargetedSpell implements TargetedLocationSpell {
 						if (growth > 1) BlockUtils.setGrowthLevel(b, growth - 1);
 						count++;
 					}
-				} else if (((growWheat && b.getType() == SpellMaterial.WHEAT.parseMaterial()) || (growBeetroot && b.getType() == Material.BEETROOT) || (growCarrots && b.getType() == Material.CARROT) || (growPotatoes && b.getType() == Material.POTATO)) && BlockUtils.getGrowthLevel(b) < 7) {
+				} else if (((growWheat && SpellMaterial.WHEAT.containsMaterial(b.getType().name())) || (growBeetroot && SpellMaterial.BEETROOTS.containsMaterial(b.getType().name()))
+						|| (growCarrots && SpellMaterial.CARROTS.containsMaterial(b.getType().name())) || (growPotatoes && SpellMaterial.POTATOES.containsMaterial(b.getType().name())))
+						&& BlockUtils.getGrowthLevel(b) < 7) {
 					int newGrowth = BlockUtils.getGrowthLevel(b) + growth;
 					if (newGrowth > 7) newGrowth = 7;
 					BlockUtils.setGrowthLevel(b, newGrowth);

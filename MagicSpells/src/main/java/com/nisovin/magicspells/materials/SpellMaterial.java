@@ -1,12 +1,10 @@
 package com.nisovin.magicspells.materials;
 
 import com.nisovin.magicspells.MagicSpells;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
 
-import java.util.EnumSet;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -1028,6 +1026,17 @@ public enum SpellMaterial {
 
         SpellMaterial mat = fromMaterial(comp.getType());
         if (isDamageable(mat) && this.parseMaterial() == comp.getType())
+            return true;
+
+        return false;
+    }
+
+    public boolean containsMaterial(String type) {
+        // Check for materials first for backwards support, THEN check the current enum
+        if (Arrays.asList(materials).contains(type.toUpperCase()))
+            return true;
+
+        if (this.toString().equalsIgnoreCase(type))
             return true;
 
         return false;

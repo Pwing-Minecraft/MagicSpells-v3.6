@@ -881,6 +881,16 @@ public class VolatileCodeEnabled_1_9_R2 implements VolatileCodeHandle {
 	}
 
 	@Override
+	public int getGrowthLevel(Block block) {
+		return this.fallback.getGrowthLevel(block);
+	}
+
+	@Override
+	public void setGrowthLevel(Block block, int level) {
+		this.fallback.setGrowthLevel(block, level);
+	}
+
+	@Override
 	public Material fromId(int id, byte data) {
 		return fallback.fromId(id, data);
 	}

@@ -128,5 +128,9 @@ public interface VolatileCodeHandle {
 
 	BlockChangeDelegate getTreeWatcher(Location loc, List<BlockState> states);
 
+	int getGrowthLevel(Block block);
+
+	void setGrowthLevel(Block block, int level);
+
 	Material fromId(int id, byte data);
 }

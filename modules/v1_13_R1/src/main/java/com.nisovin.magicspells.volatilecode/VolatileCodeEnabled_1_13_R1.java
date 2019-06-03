@@ -51,6 +51,7 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.attribute.AttributeModifier.Operation;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Powerable;
 import org.bukkit.craftbukkit.v1_13_R1.CraftServer;
@@ -917,6 +918,25 @@ public class VolatileCodeEnabled_1_13_R1 implements VolatileCodeHandle {
 				return getBlockData(x, y, z) == null;
 			}
 		};
+	}
+
+	@Override
+	public int getGrowthLevel(Block block) {
+		BlockData blockData = block.getBlockData();
+		if (blockData instanceof Ageable)
+			return ((Ageable) blockData).getAge();
+
+		return 0;
+	}
+
+	@Override
+	public void setGrowthLevel(Block block, int level) {
+		BlockData blockData = block.getBlockData();
+		if (blockData instanceof Ageable) {
+			Ageable ageable = (Ageable) blockData;
+			ageable.setAge(level);
+			block.setBlockData(ageable);
+		}
 	}
 
 	@Override

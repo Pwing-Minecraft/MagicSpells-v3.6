@@ -73,12 +73,11 @@ public class BlockUtils {
 	}
 	
 	public static int getGrowthLevel(Block block) {
-		return block.getData();
+		return MagicSpells.getVolatileCodeHandler().getGrowthLevel(block);
 	}
 
-	// TODO: Add BlockData support
 	public static void setGrowthLevel(Block block, int level) {
-		block.getState().setRawData((byte)level);
+		MagicSpells.getVolatileCodeHandler().setGrowthLevel(block, level);
 	}
 	
 	public static boolean growWarts(NetherWarts wart, int stagesToGrow) {
@@ -89,7 +88,7 @@ public class BlockUtils {
 		return true;
 		
 	}
-	
+
 	public static int getWaterLevel(BlockState blockState) {
 		return blockState.getRawData();
 	}

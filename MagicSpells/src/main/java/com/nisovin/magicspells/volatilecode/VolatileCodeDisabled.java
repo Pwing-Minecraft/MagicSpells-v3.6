@@ -395,6 +395,16 @@ public class VolatileCodeDisabled implements VolatileCodeHandle {
 	}
 
 	@Override
+	public int getGrowthLevel(Block block) {
+		return block.getData();
+	}
+
+	@Override
+	public void setGrowthLevel(Block block, int level) {
+		block.setData((byte) level);
+	}
+
+	@Override
 	public Material fromId(int id, byte data) {
 		// Breaks in versions 1.13+
 		return Material.matchMaterial(String.valueOf(id));
