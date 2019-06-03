@@ -6,7 +6,7 @@ import com.nisovin.magicspells.Spell;
 import com.nisovin.magicspells.mana.ManaChangeReason;
 import com.nisovin.magicspells.util.HandHandler;
 import com.nisovin.magicspells.util.SpellReagents;
-
+import com.sk89q.worldedit.entity.Player;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
@@ -15,49 +15,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class LivingEntityCaster implements Caster {
+public class PlayerCaster implements Caster {
 
-    private LivingEntity entity;
+    private Player player;
 
-    private LivingEntityCaster(LivingEntity entity) {
-        this.entity = entity;
-    }
-
-    @Override
-    public boolean canLearn(Spell spell) {
-        if (spell.isHelperSpell()) {
-            MagicSpells.debug("Cannot learn " + spell.getName() + " because it is a helper spell");
-            return false;
-        }
-
-        if (spell.getPrerequisites() != null && !spell.getPrerequisites().isEmpty()) {
-            for (String spellName : spell.getPrerequisites()) {
-                Spell sp = MagicSpells.getSpellByInGameName(spellName);
-                if (sp == null) {
-                    MagicSpells.debug("Cannot learn " + spell.getName() + " because the prerequisite of " + spellName + " has not been satisfied");
-                    return false;
-                }
-            }
-        }
-
-        // TODO: Find a way to add this in...
-        /*
-        if (spell.getXpRequired() != null && !spell.getXpRequired().isEmpty()) {
-            MagicXpHandler handler = MagicSpells.getMagicXpHandler();
-            if (handler != null) {
-                for (String school : spell.getXpRequired().keySet()) {
-                    if (handler.getXp(entity, school) < spell.getXpRequired().get(school)) {
-                        MagicSpells.debug("Cannot learn " + spell.getName() + " because the target does not have enough magic xp");
-                        return false;
-                    }
-                }
-            }
-        }
-        */
-
-        // TODO: Add permission support for entities learning?
-        // MagicSpells.debug("Checking learn permissions for " + entity.getName());
-        return true;
+    private PlayerCaster(Player player) {
+        this.player = player;
     }
 
     @Override
@@ -65,24 +28,8 @@ public class LivingEntityCaster implements Caster {
         if (spell.isHelperSpell())
             return true;
 
-        if (MagicSpells.ignoreEntityCastPerms())
-            return true;
-
-        return Perm.CAST.has(entity, spell);
-    }
-
-    @Override
-    public boolean canTeach(Spell spell) {
-        if (spell.isHelperSpell())
-            return false;
-
-        // TODO: Add permission support for entities teaching?
-        return true;
-    }
-
-    @Override
-    public boolean hasAdvancedPerm(String spell) {
-        return entity.hasPermission(Perm.ADVANCED.getNode() + spell);
+        MagicSpells.getInstance().getMagicConfig().
+        return Perm.CAST.has(player, spell);
     }
 
     @Override
@@ -214,4 +161,3 @@ public class LivingEntityCaster implements Caster {
     public Entity getEntity() {
         return entity;
     }
-}

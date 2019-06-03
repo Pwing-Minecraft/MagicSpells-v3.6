@@ -2235,7 +2235,10 @@ public abstract class Spell implements Comparable<Spell>, Listener {
 	public String getStrModifierFailed() {
 		return this.strModifierFailed;
 	}
-	
+
+	public List<String> getPrerequisites() {
+		return prerequisites;
+	}
 	public Map<String, Integer> getXpGranted() {
 		return this.xpGranted;
 	}

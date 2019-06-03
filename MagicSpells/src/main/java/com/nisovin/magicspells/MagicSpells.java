@@ -103,6 +103,7 @@ public class MagicSpells extends JavaPlugin {
 	boolean ignoreGrantPerms;
 	boolean ignoreGrantPermsFakeValue;
 	boolean ignoreCastPerms;
+	boolean ignoreEntityCastPerms;
 	
 	boolean enableTempGrantPerms = true;
 	
@@ -275,6 +276,7 @@ public class MagicSpells extends JavaPlugin {
 		ignoreGrantPerms = config.getBoolean("general.ignore-grant-perms", false);
 		ignoreGrantPermsFakeValue = config.getBoolean("general.ignore-grant-perms-fake-value", true);
 		ignoreCastPerms = config.getBoolean("general.ignore-cast-perms", false);
+		ignoreEntityCastPerms = config.getBoolean("general.ignore-entity-cast-perms", true);
 		enableTempGrantPerms = config.getBoolean("general.enable-tempgrant-perms", true);
 
 		separatePlayerSpellsPerWorld = config.getBoolean("general.separate-player-spells-per-world", false);
@@ -802,7 +804,15 @@ public class MagicSpells extends JavaPlugin {
 	public static boolean hidePredefinedItemTooltips() {
 		return plugin.hidePredefinedItemTooltips;
 	}
-	
+
+	public static boolean ignoreCastPerms() {
+		return plugin.ignoreCastPerms;
+	}
+
+	public static boolean ignoreEntityCastPerms() {
+		return plugin.ignoreEntityCastPerms;
+	}
+
 	/**
 	 * Gets the handler for no-magic zones.
 	 * @return the no-magic zone handler
