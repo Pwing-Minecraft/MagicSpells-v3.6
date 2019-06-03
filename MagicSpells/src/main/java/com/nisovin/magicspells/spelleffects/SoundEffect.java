@@ -1,9 +1,5 @@
 package com.nisovin.magicspells.spelleffects;
 
-import java.io.File;
-import java.util.Collection;
-import java.util.TreeSet;
-
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -94,28 +90,4 @@ public class SoundEffect extends SpellEffect {
 		//SoundUtils.makeSound(location, sound, volume, pitch);
 		return null;
 	}
-	
-	public static void main(String[] args) {
-		Collection<String> sounds = new TreeSet<>();
-		File file = new File("C:\\Users\\Justin.Baker\\AppData\\Roaming\\.minecraft\\assets\\sound");
-		parseFolder(file, "", sounds);
-		for (String sound : sounds) {
-			System.out.println("   * " + sound);
-		}
-	}
-	
-	static void parseFolder(File folder, String path, Collection<String> sounds) {
-		File[] files = folder.listFiles();
-		for (File file : files) {			
-			if (file.isDirectory()) {
-				parseFolder(file, path + file.getName() + '.', sounds);
-			} else if (file.getName().endsWith(".ogg")) {
-				String name = path + file.getName().replace(".ogg", "").replaceAll("[0-9]+$", "").replace(" ", "_");
-				if (!sounds.contains(name)) {
-					sounds.add(name);
-				}
-			}
-		}
-	}
-	
 }
