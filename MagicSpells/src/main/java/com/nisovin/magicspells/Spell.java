@@ -480,12 +480,14 @@ import de.slikey.effectlib.Effect;
 public abstract class Spell implements Comparable<Spell>, Listener {
 
 	private MagicConfig config;
-	
+
 	private boolean debug;
 	protected String internalName;
 	
 	protected String name;
-	
+
+	protected int weight;
+
 	protected String profilingKey;
 	
 	protected String[] aliases;
@@ -644,6 +646,7 @@ public abstract class Spell implements Comparable<Spell>, Listener {
 		this.debug = config.getBoolean(section + '.' + spellName + ".debug", false);
 		this.profilingKey = "Spell:" + this.getClass().getName().replace("com.nisovin.magicspells.spells.", "") + '-' + spellName;
 		this.name = config.getString(section + '.' + spellName + ".name", spellName);
+		this.weight = config.getInt(section + "." + spellName + ".weight", 1);
 		List<String> temp = config.getStringList(section + '.' + spellName + ".aliases", null);
 		if (temp != null) {
 			aliases = new String[temp.size()];
@@ -2158,7 +2161,11 @@ public abstract class Spell implements Comparable<Spell>, Listener {
 		if (this.name != null && !this.name.isEmpty()) return this.name;
 		return this.internalName;
 	}
-	
+
+	public int getWeight() {
+		return this.weight;
+	}
+
 	public String getPermissionName() {
 		return this.permName;
 	}
