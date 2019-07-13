@@ -109,7 +109,7 @@ public class FireballSpell extends TargetedSpell implements TargetedEntityFromLo
 				LivingEntity entity = targetInfo.getTarget();
 				power = targetInfo.getPower();
 				if (entity == null) return noTarget(player);
-				if (entity instanceof Player && checkPlugins) {
+				if (checkPlugins) {
 					// Run a pvp damage check
 					MagicSpellsEntityDamageByEntityEvent event = new MagicSpellsEntityDamageByEntityEvent(player, entity, DamageCause.ENTITY_ATTACK, 1D);
 					EventUtil.call(event);

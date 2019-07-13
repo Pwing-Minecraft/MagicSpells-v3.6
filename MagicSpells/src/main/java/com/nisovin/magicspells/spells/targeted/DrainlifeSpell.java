@@ -108,7 +108,7 @@ public class DrainlifeSpell extends TargetedSpell implements TargetedEntitySpell
 		
 		// Drain from target
 		if (takeType.equals(STR_GIVE_TAKE_TYPE_HEALTH)) {
-			if (target instanceof Player && checkPlugins) {
+			if (checkPlugins) {
 				MagicSpellsEntityDamageByEntityEvent event = new MagicSpellsEntityDamageByEntityEvent(player, target, DamageCause.ENTITY_ATTACK, take);
 				EventUtil.call(event);
 				if (event.isCancelled()) return false;

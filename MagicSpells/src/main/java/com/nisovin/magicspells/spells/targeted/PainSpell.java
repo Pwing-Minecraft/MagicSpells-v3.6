@@ -101,7 +101,7 @@ public class PainSpell extends TargetedSpell implements TargetedEntitySpell, Spe
 		MagicSpells.log(MagicSpells.DEVELOPER_DEBUG_LEVEL, "Damage resolver resolved value of " + resolvedValue);
 		double localDamage = resolvedValue * power;
 		//double dam = damage * power;
-		if (target instanceof Player && checkPlugins) {
+		if ( checkPlugins) {
 			// Handle the event myself so I can detect cancellation properly
 			MagicSpellsEntityDamageByEntityEvent event = new MagicSpellsEntityDamageByEntityEvent(player, target, damageType, localDamage);
 			EventUtil.call(event);
